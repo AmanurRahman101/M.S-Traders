@@ -290,15 +290,6 @@
             </div>
           </div>
         </section>
-
-        <!-- Data Persistence & Safety Notice -->
-        <footer class="persistence-bar">
-          <span class="persist-badge">💾 তথ্য অফলাইনে ও ক্লাউডে অটো-সেভ হচ্ছে</span>
-          <div class="persist-actions">
-            <button type="button" id="quickBackupBtn" class="link-action">📥 সম্পূর্ণ ব্যাকআপ (JSON)</button>
-            <button type="button" id="quickCsvBtn" class="link-action">📊 এক্সেল ফাইল (CSV)</button>
-          </div>
-        </footer>
       </main>
     </div>
 
@@ -756,12 +747,18 @@
 
         <!-- Data Safety & Persistence -->
         <div class="set-card">
-          <h3 id="setCard1Title" style="font-size:0.9375rem; font-weight:700;">💾 অফলাইন ব্যাকআপ ফাইল (JSON Backup)</h3>
-          <p id="setCard1Sub">আপনার ফোনের মেমোরিতে হিসাবের সম্পূর্ণ একটি ব্যাকআপ ফাইল নামিয়ে রাখুন।</p>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+            <h3 id="setCard1Title" style="font-size:0.9375rem; font-weight:700;">💾 তথ্য সেভ ও ব্যাকআপ</h3>
+            <span class="badge-pill cash-tag" style="font-size:0.6875rem;">অটো-সেভ সক্রিয়</span>
+          </div>
+          <p id="setCard1Sub" style="font-size:0.8125rem; color:var(--text-muted); margin-bottom:12px;">তথ্য অফলাইনে ও ক্লাউডে অটো-সেভ হচ্ছে। যেকোনো সময় সম্পূর্ণ ব্যাকআপ বা এক্সেল ফাইল ডাউনলোড করে রাখতে পারেন।</p>
+          <div class="form-row" style="gap:8px; margin-bottom:8px;">
+            <button type="button" id="downloadBackupBtn" class="btn-submit flex-1">📥 সম্পূর্ণ ব্যাকআপ (JSON)</button>
+            <button type="button" id="quickCsvBtn" class="btn-cancel flex-1" style="font-weight:600; border:1px solid var(--border-subtle); display:inline-flex; align-items:center; justify-content:center;">📊 এক্সেল ফাইল (CSV)</button>
+          </div>
           <div class="form-row">
-            <button type="button" id="downloadBackupBtn" class="btn-submit flex-1">📥 ডাউনলোড (JSON)</button>
-            <label class="btn-cancel flex-1" style="text-align:center; cursor:pointer;">
-              <span id="lblRestoreBtn">📤 ফেরত আনুন (Restore)</span>
+            <label class="btn-cancel flex-1" style="text-align:center; cursor:pointer; display:block;">
+              <span id="lblRestoreBtn">📤 ব্যাকআপ ফেরত আনুন (Restore)</span>
               <input type="file" id="restoreFileInput" accept=".json,application/json" class="hidden">
             </label>
           </div>

@@ -1788,10 +1788,10 @@
 
     // Backup & Settings
     el.closeSettingsModal.addEventListener('click', () => el.settingsModal.classList.add('hidden'));
-    el.downloadBackupBtn.addEventListener('click', downloadBackup);
-    el.quickBackupBtn.addEventListener('click', downloadBackup);
-    el.restoreFileInput.addEventListener('change', restoreBackup);
-    el.quickCsvBtn.addEventListener('click', exportCsv);
+    if (el.downloadBackupBtn) el.downloadBackupBtn.addEventListener('click', downloadBackup);
+    if (el.quickBackupBtn) el.quickBackupBtn.addEventListener('click', downloadBackup);
+    if (el.restoreFileInput) el.restoreFileInput.addEventListener('change', restoreBackup);
+    if (el.quickCsvBtn) el.quickCsvBtn.addEventListener('click', exportCsv);
 
     el.changePinBtn.addEventListener('click', () => {
       const oldP = el.oldPinInput.value.trim();
