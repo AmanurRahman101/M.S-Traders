@@ -525,19 +525,31 @@
   }
 
   function updateCloudBadge(status) {
-    if (!el.cloudStatusBadge) return;
-    if (status === 'synced') {
-      el.cloudStatusBadge.className = 'cloud-badge cloud-synced';
-      el.cloudStatusText.textContent = state.currentLang === 'bn' ? '☁️ ক্লাউড লাইভ সিঙ্ক' : '☁️ Cloud Synced';
-      el.cloudStatusBadge.title = 'সব ডিভাইসে লাইভ ক্লাউড ডাটাবেস সক্রিয়';
-    } else if (status === 'syncing') {
-      el.cloudStatusBadge.className = 'cloud-badge';
-      el.cloudStatusText.textContent = state.currentLang === 'bn' ? '🔄 সিঙ্ক হচ্ছে...' : '🔄 Syncing...';
-    } else {
-      el.cloudStatusBadge.className = 'cloud-badge local';
-      el.cloudStatusText.textContent = state.currentLang === 'bn' ? 'লোকাল মেমোরি' : 'Local Storage';
-      el.cloudStatusBadge.title = 'ডাটা ব্রাউজারে সংরক্ষিত (সেটিংস থেকে ক্লাউড অন করুন)';
-    }
+    const badges = [el.cloudStatusBadge, document.getElementById('mobileCloudBadge')].filter(Boolean);
+    const texts = [el.cloudStatusText, document.getElementById('mobileCloudStatusText')].filter(Boolean);
+
+    badges.forEach(b => {
+      if (status === 'synced') {
+        b.className = 'cloud-badge cloud-synced';
+        b.title = 'সব ডিভাইসে লাইভ ক্লাউড ডাটাবেস সক্রিয়';
+      } else if (status === 'syncing') {
+        b.className = 'cloud-badge';
+        b.title = '🔄 সিঙ্ক হচ্ছে...';
+      } else {
+        b.className = 'cloud-badge local';
+        b.title = 'লোকাল মেমোরি';
+      }
+    });
+
+    texts.forEach(t => {
+      if (status === 'synced') {
+        t.textContent = state.currentLang === 'bn' ? 'ক্লাউড' : 'Cloud';
+      } else if (status === 'syncing') {
+        t.textContent = '...';
+      } else {
+        t.textContent = state.currentLang === 'bn' ? 'লোকাল' : 'Local';
+      }
+    });
   }
 
   function loadData() {
@@ -778,9 +790,11 @@
     el.customerListContainer.innerHTML = filtered.map(c => {
       const st = getCustomerStats(c);
       const isPaid = st.due === 0;
+      const initial = (c.name || 'ক').trim().charAt(0);
 
       return `
         <div class="party-card" data-id="${escape(c.id)}" data-label="Customer">
+          <div class="party-avatar">${escape(initial)}</div>
           <div class="party-card-left">
             <span class="party-name">${escape(c.name)}</span>
             <span class="party-phone">📞 ${escape(c.phone)} · 📍 ${escape(c.address || 'সুরিতলা')}</span>
@@ -796,7 +810,7 @@
           <div class="party-card-actions" onclick="event.stopPropagation()">
             <button type="button" class="btn-card-action btn-cust-sale" data-id="${escape(c.id)}">${L.btn_card_sale}</button>
             <button type="button" class="btn-card-action btn-cust-pay" data-id="${escape(c.id)}">${L.btn_card_pay}</button>
-            <button type="button" class="btn-card-action btn-wa" data-id="${escape(c.id)}">${L.btn_card_wa}</button>
+            <button type="button" class="btn-card-action btn-wa" data-id="${escape(c.id)}" title="${L.btn_card_wa}">💬</button>
           </div>
         </div>
       `;
@@ -844,9 +858,11 @@
     el.supplierListContainer.innerHTML = filtered.map(s => {
       const st = getSupplierStats(s);
       const isPaid = st.due === 0;
+      const initial = (s.name || 'ম').trim().charAt(0);
 
       return `
         <div class="party-card supplier-card" data-id="${escape(s.id)}" data-label="Supplier">
+          <div class="party-avatar">${escape(initial)}</div>
           <div class="party-card-left">
             <span class="party-name">🏭 ${escape(s.name)}</span>
             <span class="party-phone">📞 ${escape(s.phone)} · 📍 ${escape(s.address || 'সাপ্লায়ার/মিল')}</span>
@@ -1249,7 +1265,7 @@
         } else {
           const p = ev.data;
           return `
-            <div class="timeline-item" style="border-left: 3px solid var(--cash-color);">
+            <div class="timeline-item timeline-cash">
               <div>
                 <strong class="text-cash">৳ জমা পরিশোধ (${escape(p.method || 'ক্যাশ')})</strong>
                 <small style="display:block;color:var(--text-muted);">${ev.date} · ${escape(p.note || 'নগদ জমা')}</small>
@@ -1290,7 +1306,7 @@
         if (ev.type === 'purchase') {
           const p = ev.data;
           return `
-            <div class="timeline-item" style="border-left: 3px solid var(--dena-color);">
+            <div class="timeline-item timeline-dena">
               <div>
                 <strong class="text-dena">🏭 ${escape(p.itemDesc || 'মাল ক্রয়')}</strong>
                 <small style="display:block;color:var(--text-muted);">${ev.date} · ${escape(p.note || 'চালান')}</small>
@@ -1303,7 +1319,7 @@
         } else {
           const p = ev.data;
           return `
-            <div class="timeline-item" style="border-left: 3px solid var(--cash-color);">
+            <div class="timeline-item timeline-cash">
               <div>
                 <strong class="text-cash">৳ দেনা পরিশোধ (${escape(p.method || 'ব্যাংক/ক্যাশ')})</strong>
                 <small style="display:block;color:var(--text-muted);">${ev.date} · ${escape(p.note || 'পরিশোধ')}</small>
@@ -1435,9 +1451,12 @@
     localStorage.setItem(STORAGE_KEY_LANG, lang);
     document.documentElement.lang = lang;
     el.langLabel.textContent = lang === 'bn' ? 'English' : 'বাংলা';
+    const mobileLangLabel = document.getElementById('mobileLangLabel');
+    if (mobileLangLabel) mobileLangLabel.textContent = lang === 'bn' ? 'EN' : 'বাং';
     applyLanguageDOM();
     renderAll();
     calculateMeasure();
+    updateCloudBadge(isCloudConfigured() ? 'synced' : 'local');
   }
 
   function applyLanguageDOM() {
@@ -1558,6 +1577,9 @@
     el.lockAppBtn.addEventListener('click', lockApp);
 
     // Mobile Navigation & Header Controls
+    const mobileLangBtn = document.getElementById('mobileLangBtn');
+    if (mobileLangBtn) mobileLangBtn.addEventListener('click', () => setLanguage(state.currentLang === 'bn' ? 'en' : 'bn'));
+
     const mobileThemeBtn = document.getElementById('mobileThemeBtn');
     if (mobileThemeBtn) mobileThemeBtn.addEventListener('click', () => setTheme(state.currentTheme === 'dark' ? 'light' : 'dark'));
 

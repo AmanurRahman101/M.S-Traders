@@ -109,13 +109,18 @@
 
       <!-- MOBILE TOP HEADER (< 768px) -->
       <header class="mobile-header">
-        <div style="display:flex; align-items:center; gap:8px;">
+        <div class="mobile-header-brand">
           <h1 class="mobile-brand-title">M.S Traders</h1>
-          <span class="badge-pill neutral-tag" style="font-size:0.6875rem;">সুরিতলা</span>
+          <div id="mobileCloudBadge" class="cloud-badge local" title="ডেটাবেস স্ট্যাটাস">
+            <span class="cloud-dot"></span>
+            <span id="mobileCloudStatusText">লোকাল</span>
+          </div>
         </div>
         <div class="mobile-header-actions">
-          <button type="button" id="mobileThemeBtn" class="mobile-header-btn" title="থিম পরিবর্তন">🌙</button>
-          <button type="button" id="mobileSettingsBtn" class="mobile-header-btn" title="সেটিংস">⚙</button>
+          <button type="button" id="mobileLangBtn" class="mobile-header-btn" title="English / বাংলা">
+            <span id="mobileLangLabel">EN</span>
+          </button>
+          <button type="button" id="mobileThemeBtn" class="mobile-header-btn" title="লাইট / ডার্ক মোড">🌙</button>
           <button type="button" id="mobileLockBtn" class="mobile-header-btn" title="লক">🔒</button>
         </div>
       </header>
@@ -123,11 +128,21 @@
       <!-- MAIN CONTENT CONTAINER -->
       <main class="content-container">
 
-        <!-- 1. THE 3 FINANCIAL PILLARS: PAWNA (Due) | DENA (Liability) | NET CASH -->
+        <!-- 1. THE 3 FINANCIAL PILLARS: CASH (Hero) | PAWNA | DENA -->
         <section class="kpi-strip">
           
+          <!-- TODAY'S NET CASH (In hand: Cash in minus cash out) -->
+          <div class="kpi-card cash-kpi">
+            <div class="kpi-header">
+              <span class="kpi-title" id="lblCashTitle">আজকের হাতে ক্যাশ (Net Cash)</span>
+              <span class="badge-pill cash-tag">আজকের ক্যাশ</span>
+            </div>
+            <div class="kpi-amount text-cash" id="statTodayCash">৳০</div>
+            <div class="kpi-note" id="noteCash">আজকের নগদ আদায় − পরিশোধ ও খরচ</div>
+          </div>
+
           <!-- PAWNA (Receivables: What customers owe us) -->
-          <div class="kpi-card">
+          <div class="kpi-card pawna-kpi">
             <div class="kpi-header">
               <span class="kpi-title" id="lblPawnaTitle">মোট পাওনা (PAWNA / Dues)</span>
               <span class="badge-pill pawna-tag">আদায় বাকি</span>
@@ -137,23 +152,13 @@
           </div>
 
           <!-- DENA (Liabilities: What we owe suppliers/mills) -->
-          <div class="kpi-card">
+          <div class="kpi-card dena-kpi">
             <div class="kpi-header">
               <span class="kpi-title" id="lblDenaTitle">মোট দেনা (DENA / Liabilities)</span>
               <span class="badge-pill dena-tag">পরিশোধ বাকি</span>
             </div>
             <div class="kpi-amount text-dena" id="statDena">৳০</div>
             <div class="kpi-note" id="noteDena">মহাজন ও সাপ্লায়ারদের কাছে আমাদের দেনা</div>
-          </div>
-
-          <!-- TODAY'S NET CASH (In hand: Cash in minus cash out) -->
-          <div class="kpi-card">
-            <div class="kpi-header">
-              <span class="kpi-title" id="lblCashTitle">আজকের হাতে ক্যাশ (Net Cash)</span>
-              <span class="badge-pill cash-tag">আজকের ক্যাশ</span>
-            </div>
-            <div class="kpi-amount text-cash" id="statTodayCash">৳০</div>
-            <div class="kpi-note" id="noteCash">আজকের নগদ আদায় − পরিশোধ ও খরচ</div>
           </div>
         </section>
 
