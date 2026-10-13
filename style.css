@@ -1,19 +1,19 @@
 /* ===================================================================
    M.S TRADERS - SURITOLA, DHAKA
-   Zero Entry Barrier Retail Khata Design
-   Architectural Minimalist Palette (Warm Stone Light / Deep Slate Dark)
+   Modern Minimalist Retail UI: PAWNA (Dues) · DENA (Liabilities) · CASH
+   Editorial Warm Stone Palette (Light) & Deep Obsidian (Dark)
    =================================================================== */
 
 :root {
-  /* LIGHT THEME (Warm Architectural Sand / Paper) */
-  --bg-page: #f5f4ef;
+  /* LIGHT THEME (Warm Architectural Sand & Clean Paper) */
+  --bg-page: #f6f5f1;
   --bg-card: #ffffff;
-  --bg-subtle: #eeede8;
+  --bg-subtle: #eeede7;
   --bg-input: #ffffff;
   --bg-hover: #ebe9e1;
 
-  --border: #e2e0d8;
-  --border-strong: #ccc9be;
+  --border: #e2dfd5;
+  --border-strong: #ccc8bb;
 
   --text-main: #141517;
   --text-muted: #5e6066;
@@ -22,13 +22,20 @@
   --primary: #18191c;
   --primary-text: #ffffff;
 
-  --due-red: #c92a2a;
-  --due-red-bg: #fff5f5;
-  --due-red-border: #ffc9c9;
+  /* PAWNA (Customer Dues / Receivables) - Coral Crimson */
+  --pawna-color: #d6336c;
+  --pawna-bg: #fff0f6;
+  --pawna-border: #fcc2d7;
 
-  --paid-green: #2b8a3e;
-  --paid-green-bg: #ebfbee;
-  --paid-green-border: #b2f2bb;
+  /* DENA (Supplier Liabilities / Payables) - Terracotta Violet */
+  --dena-color: #e8590c;
+  --dena-bg: #fff4e6;
+  --dena-border: #ffd8a8;
+
+  /* CASH / PAYMENTS - Emerald Green */
+  --cash-color: #2b8a3e;
+  --cash-bg: #ebfbee;
+  --cash-border: #b2f2bb;
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -36,8 +43,8 @@
   --radius-pill: 9999px;
 
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 14px 35px rgba(0, 0, 0, 0.1);
 
   --font-family: "Hind Siliguri", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", Menlo, Consolas, monospace;
@@ -45,33 +52,37 @@
 
 /* DARK THEME (Deep Slate / Obsidian) */
 body.theme-dark {
-  --bg-page: #0f1013;
-  --bg-card: #18191d;
-  --bg-subtle: #212228;
-  --bg-input: #1b1c21;
-  --bg-hover: #2a2b33;
+  --bg-page: #0d0e12;
+  --bg-card: #16171d;
+  --bg-subtle: #1f2027;
+  --bg-input: #191a22;
+  --bg-hover: #272833;
 
-  --border: #282a32;
-  --border-strong: #3b3e4a;
+  --border: #282a35;
+  --border-strong: #3d4050;
 
-  --text-main: #f4f4f6;
-  --text-muted: #9fa2ad;
-  --text-faint: #656773;
+  --text-main: #f4f4f7;
+  --text-muted: #9fa2b0;
+  --text-faint: #656777;
 
-  --primary: #f4f4f6;
-  --primary-text: #0f1013;
+  --primary: #f4f4f7;
+  --primary-text: #0d0e12;
 
-  --due-red: #ff6b6b;
-  --due-red-bg: rgba(255, 107, 107, 0.12);
-  --due-red-border: rgba(255, 107, 107, 0.3);
+  --pawna-color: #ff6b8b;
+  --pawna-bg: rgba(255, 107, 139, 0.12);
+  --pawna-border: rgba(255, 107, 139, 0.3);
 
-  --paid-green: #51cf66;
-  --paid-green-bg: rgba(81, 207, 102, 0.12);
-  --paid-green-border: rgba(81, 207, 102, 0.3);
+  --dena-color: #ffa94d;
+  --dena-bg: rgba(255, 169, 77, 0.12);
+  --dena-border: rgba(255, 169, 77, 0.3);
 
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.5);
+  --cash-color: #51cf66;
+  --cash-bg: rgba(81, 207, 102, 0.12);
+  --cash-border: rgba(81, 207, 102, 0.3);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 14px 35px rgba(0, 0, 0, 0.6);
 }
 
 /* Base Reset */
@@ -92,11 +103,13 @@ body {
 }
 
 .hidden { display: none !important; }
-.text-danger { color: var(--due-red) !important; }
-.text-success { color: var(--paid-green) !important; }
+.text-pawna { color: var(--pawna-color) !important; }
+.text-dena { color: var(--dena-color) !important; }
+.text-cash { color: var(--cash-color) !important; }
+.text-danger { color: var(--pawna-color) !important; }
 
 /* ===================================================================
-   LOCK SCREEN
+   PIN LOCK SCREEN
    =================================================================== */
 .lock-screen {
   min-height: 100vh;
@@ -130,9 +143,9 @@ body {
 }
 
 .lock-title {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   margin-bottom: 2px;
 }
 
@@ -185,7 +198,7 @@ body {
 
 .pin-error {
   font-size: 12px;
-  color: var(--due-red);
+  color: var(--pawna-color);
   margin-top: 6px;
   text-align: center;
 }
@@ -211,7 +224,7 @@ body {
 
 .num-key:hover { background: var(--bg-hover); }
 .num-key:active { transform: scale(0.96); }
-.num-key.clear { font-size: 13px; color: var(--due-red); }
+.num-key.clear { font-size: 13px; color: var(--pawna-color); }
 .num-key.enter { font-size: 14px; background: var(--primary); color: var(--primary-text); }
 
 .lock-hint {
@@ -220,12 +233,12 @@ body {
 }
 
 /* ===================================================================
-   MAIN LAYOUT & NAV
+   MAIN APP LAYOUT & TOP NAV
    =================================================================== */
 .app-container {
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 16px 20px 60px;
+  padding: 18px 20px 70px;
 }
 
 .top-nav {
@@ -246,7 +259,20 @@ body {
 .shop-title-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+.shop-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  line-height: 1.1;
+}
+
+.shop-sub {
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 .cloud-badge {
@@ -263,9 +289,9 @@ body {
 }
 
 .cloud-badge.cloud-synced {
-  background: var(--paid-green-bg);
-  border-color: var(--paid-green-border);
-  color: var(--paid-green);
+  background: var(--cash-bg);
+  border-color: var(--cash-border);
+  color: var(--cash-color);
 }
 
 .cloud-dot {
@@ -276,21 +302,8 @@ body {
 }
 
 .cloud-badge.cloud-synced .cloud-dot {
-  background: var(--paid-green);
+  background: var(--cash-color);
   box-shadow: 0 0 5px rgba(43, 138, 62, 0.4);
-}
-
-.shop-name {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-main);
-  line-height: 1.1;
-}
-
-.shop-sub {
-  font-size: 12px;
-  color: var(--text-muted);
 }
 
 .nav-right {
@@ -322,11 +335,11 @@ body {
 }
 
 /* ===================================================================
-   1. BIG FRIENDLY SUMMARY CARDS (INSTANT NUMBERS)
+   1. THE 3 FINANCIAL PILLARS: PAWNA | DENA | CASH
    =================================================================== */
 .summary-banner {
   display: grid;
-  grid-template-columns: 1.4fr 1.2fr 1fr;
+  grid-template-columns: 1.2fr 1.2fr 1.1fr;
   gap: 14px;
   margin-bottom: 20px;
 }
@@ -341,12 +354,16 @@ body {
   flex-direction: column;
 }
 
-.summary-box.alert-box {
-  border-left: 4px solid var(--due-red);
+.summary-box.pawna-box {
+  border-left: 4px solid var(--pawna-color);
 }
 
-.summary-box.success-box {
-  border-left: 4px solid var(--paid-green);
+.summary-box.dena-box {
+  border-left: 4px solid var(--dena-color);
+}
+
+.summary-box.cash-box {
+  border-left: 4px solid var(--cash-color);
 }
 
 .box-header {
@@ -369,14 +386,14 @@ body {
   border-radius: var(--radius-pill);
 }
 
-.due-tag { background: var(--due-red-bg); color: var(--due-red); }
-.paid-tag { background: var(--paid-green-bg); color: var(--paid-green); }
-.count-tag { background: var(--bg-subtle); color: var(--text-muted); }
+.pawna-tag { background: var(--pawna-bg); color: var(--pawna-color); }
+.dena-tag { background: var(--dena-bg); color: var(--dena-color); }
+.cash-tag { background: var(--cash-bg); color: var(--cash-color); }
 
 .box-amount {
   font-size: 26px;
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
   letter-spacing: -0.02em;
   margin-bottom: 2px;
 }
@@ -387,92 +404,131 @@ body {
 }
 
 /* ===================================================================
-   2. TWO BIG PRIMARY BUTTONS (ZERO ENTRY BARRIER)
+   2. FOUR ACTION TILES (CLEAN & THUMB-FRIENDLY)
    =================================================================== */
-.quick-action-bar {
+.quick-action-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
 }
 
-.btn-hero-primary,
-.btn-hero-secondary {
+.btn-action-tile {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px 20px;
+  gap: 12px;
+  padding: 14px 16px;
   border-radius: var(--radius-md);
   cursor: pointer;
   font-family: inherit;
   transition: all 0.15s ease;
-  border: 1px solid transparent;
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   text-align: left;
+  background: var(--bg-card);
 }
 
-.btn-hero-primary {
-  background: var(--primary);
-  color: var(--primary-text);
-  border-color: var(--primary);
+.btn-action-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
-.btn-hero-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.btn-hero-secondary {
-  background: var(--paid-green-bg);
-  color: var(--paid-green);
-  border: 1px solid var(--paid-green-border);
-}
-
-.btn-hero-secondary:hover {
-  background: var(--paid-green);
-  color: #ffffff;
-  transform: translateY(-1px);
-}
-
-.hero-icon {
-  font-size: 24px;
-  font-weight: 700;
-  width: 40px;
-  height: 40px;
+.tile-icon {
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.15);
   flex-shrink: 0;
 }
 
-.btn-hero-secondary .hero-icon {
-  background: rgba(43, 138, 62, 0.15);
-}
+.tile-sale { border-color: var(--primary); }
+.tile-sale .tile-icon { background: var(--primary); color: var(--primary-text); }
+.tile-sale strong { color: var(--text-main); }
 
-.btn-hero-secondary:hover .hero-icon {
-  background: rgba(255, 255, 255, 0.2);
-}
+.tile-cust-pay { border-color: var(--cash-border); }
+.tile-cust-pay .tile-icon { background: var(--cash-bg); color: var(--cash-color); }
+.tile-cust-pay strong { color: var(--cash-color); }
 
-.hero-text strong {
+.tile-dena { border-color: var(--dena-border); }
+.tile-dena .tile-icon { background: var(--dena-bg); color: var(--dena-color); }
+.tile-dena strong { color: var(--dena-color); }
+
+.tile-expense { border-color: var(--border); }
+.tile-expense .tile-icon { background: var(--bg-subtle); color: var(--text-muted); }
+.tile-expense strong { color: var(--text-main); }
+
+.tile-content strong {
   display: block;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.2;
 }
 
-.hero-text small {
+.tile-content small {
   display: block;
-  font-size: 11px;
-  opacity: 0.85;
+  font-size: 10px;
+  color: var(--text-muted);
   margin-top: 2px;
 }
 
 /* ===================================================================
-   3. SEARCH & FILTER STRIP
+   3. SLEEK SEGMENTED NAVIGATION TABS
    =================================================================== */
-.ledger-section {
+.nav-segmented-control {
+  display: flex;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 18px;
+}
+
+.seg-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.seg-btn.active {
+  background: var(--bg-card);
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+
+.seg-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-subtle);
+  color: var(--text-main);
+}
+
+.seg-btn.active .seg-badge {
+  background: var(--primary);
+  color: var(--primary-text);
+}
+
+/* ===================================================================
+   RECORD CARDS & LISTS (PAWNA / DENA)
+   =================================================================== */
+.ledger-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -480,19 +536,19 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
-.ledger-controls {
+.ledger-toolbar {
   display: flex;
   gap: 12px;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
 }
 
 .search-input-wrap {
   position: relative;
   flex: 1;
-  min-width: 260px;
+  min-width: 240px;
   display: flex;
   align-items: center;
 }
@@ -507,7 +563,7 @@ body {
 
 .search-input-wrap input {
   width: 100%;
-  padding: 10px 34px;
+  padding: 9px 34px;
   background: var(--bg-subtle);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -541,7 +597,7 @@ body {
 }
 
 .f-pill {
-  padding: 6px 14px;
+  padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
   border: none;
@@ -559,10 +615,7 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
-/* ===================================================================
-   4. CUSTOMER CARDS (STREAMLINED ZERO ENTRY BARRIER)
-   =================================================================== */
-.customer-cards-list {
+.records-cards-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -572,7 +625,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
+  padding: 13px 16px;
   background: var(--bg-subtle);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -606,15 +659,9 @@ body {
   font-family: var(--font-mono);
 }
 
-.party-last-sale {
-  font-size: 11px;
-  color: var(--text-faint);
-  margin-top: 2px;
-}
-
 .party-card-center {
   text-align: right;
-  padding-right: 12px;
+  padding-right: 10px;
 }
 
 .party-due-amount {
@@ -640,7 +687,7 @@ body {
 }
 
 .btn-card-action {
-  padding: 7px 12px;
+  padding: 6px 12px;
   font-size: 12px;
   font-weight: 600;
   border-radius: var(--radius-sm);
@@ -669,68 +716,78 @@ body {
   border-color: #25d366;
 }
 
-/* Empty State */
-.empty-list-card {
-  text-align: center;
-  padding: 40px 16px;
-  color: var(--text-muted);
-}
-
-.empty-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
-}
-
-.empty-list-card h3 {
-  font-size: 15px;
-  color: var(--text-main);
-  margin-bottom: 4px;
-}
-
-.empty-list-card p {
-  font-size: 12px;
-}
-
-/* Persistence bar */
-.persistence-bar {
-  margin-top: 18px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--text-muted);
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.persist-badge {
-  font-weight: 500;
-}
-
-.persist-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.link-action {
-  background: transparent;
-  border: none;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-main);
-  cursor: pointer;
-  font-family: inherit;
-  text-decoration: underline;
-}
-
-.link-action:hover {
-  opacity: 0.8;
+/* Supplier Card Accent */
+.party-card.supplier-card {
+  border-left: 3px solid var(--dena-color);
 }
 
 /* ===================================================================
-   MODALS (CLEAN & NON-TECHNICAL)
+   EXPENSE STRIP & TIMELINE
+   =================================================================== */
+.expense-summary-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+
+.sub-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: block;
+}
+
+.exp-total-val {
+  font-size: 22px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--pawna-color);
+}
+
+.btn-tile-small {
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: var(--primary-text);
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.expense-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exp-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.exp-cat-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-main);
+}
+
+/* ===================================================================
+   MODALS (CLEAN ARCHITECTURAL & NON-TECHNICAL)
    =================================================================== */
 .modal-overlay {
   position: fixed;
@@ -759,13 +816,8 @@ body {
   animation: popIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.simple-modal-box.small-box {
-  max-width: 420px;
-}
-
-.simple-modal-box.wide-box {
-  max-width: 680px;
-}
+.simple-modal-box.small-box { max-width: 420px; }
+.simple-modal-box.wide-box { max-width: 680px; }
 
 @keyframes popIn {
   from { opacity: 0; transform: scale(0.97) translateY(8px); }
@@ -780,10 +832,7 @@ body {
   justify-content: space-between;
 }
 
-.modal-top h2 {
-  font-size: 17px;
-  font-weight: 700;
-}
+.modal-top h2 { font-size: 17px; font-weight: 700; }
 
 .btn-close-modal {
   background: var(--bg-subtle);
@@ -799,9 +848,7 @@ body {
   color: var(--text-muted);
 }
 
-.btn-close-modal:hover {
-  color: var(--text-main);
-}
+.btn-close-modal:hover { color: var(--text-main); }
 
 .modal-form,
 .st-content,
@@ -816,10 +863,6 @@ body {
   margin-bottom: 14px;
 }
 
-.form-row:last-child {
-  margin-bottom: 0;
-}
-
 .field-wrap {
   display: flex;
   flex-direction: column;
@@ -827,10 +870,7 @@ body {
   margin-bottom: 14px;
 }
 
-.form-row .field-wrap {
-  margin-bottom: 0;
-}
-
+.form-row .field-wrap { margin-bottom: 0; }
 .flex-1 { flex: 1; }
 .flex-2 { flex: 2; }
 
@@ -858,8 +898,7 @@ select {
   outline: none;
 }
 
-input:focus,
-select:focus {
+input:focus, select:focus {
   border-color: var(--text-main);
 }
 
@@ -869,7 +908,7 @@ select:focus {
   margin-top: 3px;
 }
 
-/* Measurement Box (Gauze & Ghira) */
+/* Measurement Panel (Gauze & Ghira) */
 .measurement-panel {
   background: var(--bg-subtle);
   border: 1px solid var(--border);
@@ -883,10 +922,6 @@ select:focus {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 10px;
-}
-
-.measure-header strong {
-  font-size: 13px;
 }
 
 .measure-tag {
@@ -910,9 +945,7 @@ select:focus {
   align-items: center;
 }
 
-.unit-input input {
-  padding-right: 36px;
-}
+.unit-input input { padding-right: 36px; }
 
 .unit-text {
   position: absolute;
@@ -941,12 +974,15 @@ select:focus {
 .due-pill {
   padding: 9px 12px;
   background: var(--bg-card);
-  border: 1px solid var(--due-red-border);
+  border: 1px solid var(--pawna-border);
   border-radius: var(--radius-sm);
   font-size: 16px;
   font-weight: 700;
-  color: var(--due-red);
   font-family: var(--font-mono);
+}
+
+.due-pill.text-dena {
+  border-color: var(--dena-border);
 }
 
 .modal-btn-row {
@@ -956,8 +992,7 @@ select:focus {
   justify-content: flex-end;
 }
 
-.btn-cancel,
-.btn-submit {
+.btn-cancel, .btn-submit {
   padding: 10px 18px;
   font-size: 13px;
   font-weight: 600;
@@ -1006,13 +1041,8 @@ select:focus {
 .suggestion-row:hover { background: var(--bg-hover); }
 
 /* ===================================================================
-   CUSTOMER STATEMENT MODAL
+   STATEMENT MODALS (PAWNA / DENA)
    =================================================================== */
-.st-phone {
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
 .st-figures {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1027,9 +1057,8 @@ select:focus {
   padding: 12px;
 }
 
-.st-fig.alert-fig {
-  border-left: 3px solid var(--due-red);
-}
+.st-fig.alert-fig { border-left: 3px solid var(--pawna-color); }
+.st-fig.alert-fig.dena-alert { border-left: 3px solid var(--dena-color); }
 
 .st-fig span {
   display: block;
@@ -1053,6 +1082,7 @@ select:focus {
 }
 
 .btn-st-primary,
+.btn-st-dena,
 .btn-st-success,
 .btn-st-wa,
 .btn-st-outline,
@@ -1067,16 +1097,13 @@ select:focus {
 }
 
 .btn-st-primary { background: var(--primary); color: var(--primary-text); }
-.btn-st-success { background: var(--paid-green-bg); color: var(--paid-green); border-color: var(--paid-green-border); }
+.btn-st-dena { background: var(--dena-color); color: #ffffff; }
+.btn-st-success { background: var(--cash-bg); color: var(--cash-color); border-color: var(--cash-border); }
 .btn-st-wa { background: #25d366; color: #ffffff; }
 .btn-st-outline { background: var(--bg-card); color: var(--text-main); border-color: var(--border); }
-.btn-st-danger { background: transparent; color: var(--due-red); border-color: var(--due-red-border); }
+.btn-st-danger { background: transparent; color: var(--pawna-color); border-color: var(--pawna-border); }
 
-.st-sec-title {
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
+.st-sec-title { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
 
 .st-timeline {
   display: flex;
@@ -1097,25 +1124,6 @@ select:focus {
   font-size: 12px;
 }
 
-.tl-left strong {
-  display: block;
-  font-size: 13px;
-}
-
-.tl-left small {
-  color: var(--text-muted);
-}
-
-.tl-right {
-  text-align: right;
-}
-
-.tl-amount {
-  font-size: 14px;
-  font-weight: 700;
-  font-family: var(--font-mono);
-}
-
 /* Settings Modal */
 .set-card {
   background: var(--bg-subtle);
@@ -1125,41 +1133,56 @@ select:focus {
   margin-bottom: 12px;
 }
 
-.set-card h4 {
-  font-size: 13px;
-  margin-bottom: 4px;
+.set-card.cloud-set-card {
+  border-left: 3px solid #3b82f6;
 }
 
-.set-card p {
+.set-card h4 { font-size: 13px; margin-bottom: 4px; }
+.set-card p { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+
+.set-btn-group { display: flex; flex-direction: column; gap: 8px; }
+.restore-label { display: block; text-align: center; cursor: pointer; }
+.pin-feedback { font-size: 11px; margin-top: 6px; }
+.danger-card { border-color: var(--pawna-border); background: var(--pawna-bg); }
+
+/* Persistence Bar */
+.persistence-bar {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 11px;
   color: var(--text-muted);
-  margin-bottom: 10px;
-}
-
-.set-btn-group {
-  display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-.restore-label {
-  display: block;
-  text-align: center;
-  cursor: pointer;
-}
-
-.pin-feedback {
+.link-action {
+  background: transparent;
+  border: none;
   font-size: 11px;
-  margin-top: 6px;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
 }
 
-.danger-card {
-  border-color: var(--due-red-border);
-  background: var(--due-red-bg);
+/* Empty State */
+.empty-list-card {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--text-muted);
 }
+
+.empty-icon { font-size: 32px; margin-bottom: 8px; }
+.empty-list-card h3 { font-size: 15px; color: var(--text-main); margin-bottom: 4px; }
+.empty-list-card p { font-size: 12px; }
 
 /* ===================================================================
-   PRINT SLIP
+   PRINT STYLES
    =================================================================== */
 @media print {
   body * { visibility: hidden; }
@@ -1193,28 +1216,46 @@ select:focus {
   .slip-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 12px; }
   .slip-table th, .slip-table td { border: 1px solid #ddd; padding: 5px 6px; }
   .slip-summary { text-align: right; font-size: 12px; margin-bottom: 14px; }
-  .slip-due { font-size: 14px; font-weight: bold; color: #c92a2a; }
+  .slip-due { font-size: 14px; font-weight: bold; color: #d6336c; }
   .slip-footer { text-align: center; font-size: 10px; border-top: 1px dashed #aaa; padding-top: 6px; }
 }
 
 /* ===================================================================
-   RESPONSIVENESS (MOBILE PHONE OPTIMIZATION)
+   RESPONSIVENESS (MOBILE PHONE)
    =================================================================== */
-@media (max-width: 640px) {
-  .app-container {
-    padding: 12px 12px 40px;
-  }
+@media (max-width: 768px) {
   .summary-banner {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  .quick-action-bar {
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  .btn-hero-primary,
-  .btn-hero-secondary {
-    padding: 14px 16px;
+  .quick-action-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-container {
+    padding: 12px 12px 50px;
+  }
+  .quick-action-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .btn-action-tile {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .tile-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+  .tile-content strong {
+    font-size: 12px;
+  }
+  .tile-content small {
+    display: none;
   }
   .measure-grid {
     grid-template-columns: 1fr 1fr;
@@ -1232,7 +1273,7 @@ select:focus {
   .party-card {
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 8px;
   }
   .party-card-center {
     display: flex;
@@ -1240,7 +1281,7 @@ select:focus {
     align-items: center;
     padding-right: 0;
     border-top: 1px dashed var(--border);
-    padding-top: 8px;
+    padding-top: 6px;
   }
   .party-card-actions {
     justify-content: stretch;
