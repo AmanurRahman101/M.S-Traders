@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>M.S Traders | ডিজিটাল খাতা (Customer Ledger)</title>
+  <meta name="description" content="এম. এস. ট্রেডার্স, সুরিতলা, ঢাকা - সহজ ডিজিটাল খাতা ও বাকি হিসাব">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-light">
+
+  <!-- ==================== 1. PIN LOCK SCREEN ==================== -->
+  <div id="lockScreen" class="lock-screen">
+    <div class="lock-card">
+      <div class="lock-brand">
+        <span class="lock-tag">সুরিতলা, ঢাকা</span>
+        <h1 class="lock-title">M.S Traders</h1>
+        <p class="lock-subtitle">এম. এস. ট্রেডার্স · ডিজিটাল খাতা</p>
+      </div>
+
+      <div class="pin-entry">
+        <label for="pinInput" class="pin-label">পিন কোড দিন (PIN: 1234)</label>
+        <div class="pin-input-box">
+          <input type="password" id="pinInput" maxlength="8" placeholder="••••" autocomplete="current-password" inputmode="numeric">
+          <button type="button" id="togglePinVis" class="btn-icon" title="পিন দেখুন">👁️</button>
+        </div>
+        <div id="pinError" class="pin-error hidden">ভুল পিন! সঠিক পিন দিন।</div>
+      </div>
+
+      <!-- Simple Touch Numpad -->
+      <div class="numpad">
+        <button type="button" class="num-key" data-digit="1">1</button>
+        <button type="button" class="num-key" data-digit="2">2</button>
+        <button type="button" class="num-key" data-digit="3">3</button>
+        <button type="button" class="num-key" data-digit="4">4</button>
+        <button type="button" class="num-key" data-digit="5">5</button>
+        <button type="button" class="num-key" data-digit="6">6</button>
+        <button type="button" class="num-key" data-digit="7">7</button>
+        <button type="button" class="num-key" data-digit="8">8</button>
+        <button type="button" class="num-key" data-digit="9">9</button>
+        <button type="button" class="num-key clear" id="numClear">মুছুন</button>
+        <button type="button" class="num-key" data-digit="0">0</button>
+        <button type="button" class="num-key enter" id="numEnter">প্রবেশ</button>
+      </div>
+
+      <p class="lock-hint">ডিফল্ট পিন: <strong>1234</strong></p>
+    </div>
+  </div>
+
+  <!-- ==================== 2. MAIN APPLICATION ==================== -->
+  <div id="appContainer" class="app-container hidden">
+
+    <!-- Simple Top Bar -->
+    <header class="top-nav">
+      <div class="nav-left">
+        <div class="shop-title-wrap">
+          <h1 class="shop-name">M.S Traders</h1>
+          <span class="shop-sub">এম. এস. ট্রেডার্স · সুরিতলা, ঢাকা</span>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <!-- Language Switcher -->
+        <button id="langToggleBtn" class="action-pill" title="English / বাংলা">
+          <span class="icon">🌐</span>
+          <span id="langLabel">English</span>
+        </button>
+
+        <!-- Dark/Light Theme -->
+        <button id="themeToggleBtn" class="action-pill" title="লাইট / ডার্ক মোড">
+          <span id="themeIcon">🌙</span>
+        </button>
+
+        <!-- Backup & Settings -->
+        <button id="openSettingsBtn" class="action-pill" title="ব্যাকআপ ও সেটিংস">
+          <span>⚙</span>
+        </button>
+
+        <!-- Lock -->
+        <button id="lockAppBtn" class="action-pill" title="লক করুন">
+          <span>🔒</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="main-content">
+
+      <!-- 1. BIG FRIENDLY SUMMARY CARDS (Clean & Instant) -->
+      <section class="summary-banner">
+        <!-- Total Market Due (The most critical number for Minar) -->
+        <div class="summary-box alert-box">
+          <div class="box-header">
+            <span class="box-label" id="lblTotalDue">মোট বাকি পাওনা (Market Due)</span>
+            <span class="box-tag due-tag">আদায় বাকি</span>
+          </div>
+          <div class="box-amount text-danger" id="statTotalDue">৳০</div>
+          <div class="box-note" id="noteTotalDue">কাস্টমারদের কাছে বাকি টাকা</div>
+        </div>
+
+        <!-- Today's Cash Collection -->
+        <div class="summary-box success-box">
+          <div class="box-header">
+            <span class="box-label" id="lblTodayCollected">আজকের জমা (Today's Cash)</span>
+            <span class="box-tag paid-tag">নগদ আদায়</span>
+          </div>
+          <div class="box-amount text-success" id="statTodayPaid">৳০</div>
+          <div class="box-note" id="noteTodayPaid">আজকে দোকানে জমা হয়েছে</div>
+        </div>
+
+        <!-- Total Customers Count -->
+        <div class="summary-box neutral-box">
+          <div class="box-header">
+            <span class="box-label" id="lblTotalCustomers">মোট পার্টি / কাস্টমার</span>
+            <span class="box-tag count-tag">খাতা</span>
+          </div>
+          <div class="box-amount" id="statCustomers">০ জন</div>
+          <div class="box-note" id="noteTotalCustomers">সক্রিয় ক্রেতা ও কারখানা</div>
+        </div>
+      </section>
+
+      <!-- 2. TWO BIG PRIMARY BUTTONS (ZERO ENTRY BARRIER) -->
+      <section class="quick-action-bar">
+        <button type="button" id="btnQuickSale" class="btn-hero-primary">
+          <span class="hero-icon">＋</span>
+          <div class="hero-text">
+            <strong id="btnQuickSaleText">নতুন মাল বিক্রি (New Sale)</strong>
+            <small id="btnQuickSaleSub">গজ ও গিরা মাপে বিল তৈরি করুন</small>
+          </div>
+        </button>
+
+        <button type="button" id="btnQuickPayment" class="btn-hero-secondary">
+          <span class="hero-icon">৳</span>
+          <div class="hero-text">
+            <strong id="btnQuickPayText">টাকা জমা গ্রহণ (Receive Cash)</strong>
+            <small id="btnQuickPaySub">কাস্টমারের বাকি পরিশোধ এন্ট্রি</small>
+          </div>
+        </button>
+      </section>
+
+      <!-- 3. SEARCH & FILTER STRIP -->
+      <section class="ledger-section">
+        <div class="ledger-controls">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="পার্টির নাম বা মোবাইল নম্বর লিখুন..." autocomplete="off">
+            <button type="button" id="clearSearchBtn" class="clear-search-btn hidden">✕</button>
+          </div>
+
+          <div class="filter-pill-group">
+            <button type="button" class="f-pill active" data-filter="all" id="pillAll">সবাই (All)</button>
+            <button type="button" class="f-pill" data-filter="due" id="pillDue">বাকি আছে (Due)</button>
+            <button type="button" class="f-pill" data-filter="paid" id="pillPaid">পরিশোধ (Paid)</button>
+          </div>
+        </div>
+
+        <!-- 4. CUSTOMER CARDS LIST (Mobile & Desktop Ultra-Simple Cards) -->
+        <div class="customer-cards-list" id="customerListContainer">
+          <!-- Populated dynamically with clean, high-contrast party cards -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyListState" class="empty-list-card hidden">
+          <div class="empty-icon">📖</div>
+          <h3 id="emptyTitle">খাতা খালি</h3>
+          <p id="emptySub">উপরে "নতুন মাল বিক্রি" বাটনে চাপ দিয়ে প্রথম হিসাব শুরু করুন।</p>
+        </div>
+
+        <!-- Data Persistence Notice & Instant Backup Bar -->
+        <div class="persistence-bar">
+          <span class="persist-badge">💾 তথ্য এই ফোনে/কম্পিউটারে অটো-সেভ হচ্ছে</span>
+          <div class="persist-actions">
+            <button type="button" id="quickBackupBtn" class="link-action">📥 এক-ক্লিকে ব্যাকআপ নামান</button>
+            <button type="button" id="quickCsvBtn" class="link-action">📊 এক্সেল ফাইল</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ==================== 3. MODALS (SUPER MINIMAL) ==================== -->
+
+  <!-- MODAL 1: SUPER SIMPLE SALE ENTRY (GAUZE & GHIRA) -->
+  <div id="saleModal" class="modal-overlay hidden">
+    <div class="simple-modal-box">
+      <div class="modal-top">
+        <h2 id="saleModalHeading">নতুন মাল বিক্রি (New Sale)</h2>
+        <button type="button" class="btn-close-modal" id="closeSaleModal">✕</button>
+      </div>
+
+      <form id="saleForm" class="modal-form">
+        <!-- 1. Customer Name & Phone -->
+        <div class="form-row">
+          <div class="field-wrap flex-2">
+            <label id="lblCustName">কাস্টমার / কারখানার নাম *</label>
+            <input type="text" id="custNameInput" placeholder="উদাঃ আল-আমিন শু / বাবুল ভাই" required autocomplete="off">
+            <div id="nameSuggestions" class="suggestions-box hidden"></div>
+          </div>
+          <div class="field-wrap flex-1">
+            <label id="lblCustPhone">মোবাইল নম্বর *</label>
+            <input type="tel" id="custPhoneInput" placeholder="01XXXXXXXXX" required autocomplete="off">
+          </div>
+        </div>
+
+        <!-- 2. Rexin Product Name -->
+        <div class="field-wrap">
+          <label id="lblRexinDesc">মালের বিবরণ (Rexin Item)</label>
+          <input type="text" id="rexinDescInput" placeholder="উদাঃ ০.৮মিমি কালো রেক্সিন / সোফা লেদার">
+        </div>
+
+        <!-- 3. GAUZE & GHIRA MEASUREMENT (Core requirement) -->
+        <div class="measurement-panel">
+          <div class="measure-header">
+            <strong id="lblMeasureHeader">মালের মাপ (Gauze & Ghira)</strong>
+            <span class="measure-tag">১ গজ = ১৬ গিরা</span>
+          </div>
+
+          <div class="measure-grid">
+            <!-- Gauze (Manual input) -->
+            <div class="field-wrap">
+              <label id="lblGauze">গজ (Gauze / Yards) *</label>
+              <div class="unit-input">
+                <input type="number" id="gauzeInput" min="0" step="any" value="1" placeholder="0">
+                <span class="unit-text" id="unitGauzeText">গজ</span>
+              </div>
+            </div>
+
+            <!-- Ghira (Dropdown 1 to 16) -->
+            <div class="field-wrap">
+              <label id="lblGhira">গিরা (Ghira Dropdown) *</label>
+              <select id="ghiraSelect">
+                <!-- 0 to 16 populated dynamically -->
+              </select>
+            </div>
+
+            <!-- Rate per Gauze (Manual input) -->
+            <div class="field-wrap">
+              <label id="lblRate">দর (প্রতি গজ ৳)</label>
+              <div class="unit-input">
+                <input type="number" id="ratePerGauzeInput" min="0" step="any" placeholder="0">
+                <span class="unit-text">৳</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Measurement Preview -->
+          <div class="measure-live-preview" id="measureLivePreview">
+            মোট মাপ: <strong>১ গজ ০ গিরা (১.০০ গজ)</strong>
+          </div>
+        </div>
+
+        <!-- 4. TOTAL BILL & CASH PAID -->
+        <div class="form-row calc-row">
+          <div class="field-wrap flex-1">
+            <label id="lblTotalBill">মোট বিল (৳) *</label>
+            <input type="number" id="totalAmountInput" min="0" step="any" required placeholder="0">
+            <small class="field-hint" id="hintTotalBill">মাপ ও দর থেকে অটো আসবে</small>
+          </div>
+
+          <div class="field-wrap flex-1">
+            <label id="lblPaidNow">নগদ জমা দিলেন (৳)</label>
+            <input type="number" id="paidAmountInput" min="0" step="any" value="0" placeholder="0">
+            <small class="field-hint" id="hintPaidNow">বাকি থাকলে ০ রাখুন</small>
+          </div>
+
+          <div class="field-wrap flex-1">
+            <label id="lblDueNow">বাকি রইলো (Due)</label>
+            <div class="due-pill" id="liveDuePill">৳০</div>
+          </div>
+        </div>
+
+        <!-- 5. Date & Memo/Note -->
+        <div class="form-row">
+          <div class="field-wrap flex-1">
+            <label id="lblSaleDate">তারিখ</label>
+            <input type="date" id="saleDateInput" required>
+          </div>
+          <div class="field-wrap flex-2">
+            <label id="lblSaleNote">চালান বা মন্তব্য (ঐচ্ছিক)</label>
+            <input type="text" id="saleNoteInput" placeholder="উদাঃ চালান নং ১০৪">
+          </div>
+        </div>
+
+        <div class="modal-btn-row">
+          <button type="button" class="btn-cancel" id="cancelSaleBtn">বাতিল</button>
+          <button type="submit" class="btn-submit" id="saveSaleSubmitBtn">💾 হিসাব রাখুন (Save)</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: QUICK PAYMENT (RECEIVE CASH) -->
+  <div id="paymentModal" class="modal-overlay hidden">
+    <div class="simple-modal-box small-box">
+      <div class="modal-top">
+        <h2 id="payModalHeading">টাকা জমা গ্রহণ (Receive Cash)</h2>
+        <button type="button" class="btn-close-modal" id="closePaymentModal">✕</button>
+      </div>
+
+      <form id="paymentForm" class="modal-form">
+        <div class="field-wrap">
+          <label id="lblPayCustomer">কাস্টমার / পার্টি নির্বাচন করুন *</label>
+          <select id="payCustomerSelect" required>
+            <!-- Populated dynamically with customers that have due balances -->
+          </select>
+        </div>
+
+        <div class="field-wrap">
+          <label id="lblPayAmount">জমা টাকার পরিমাণ (৳) *</label>
+          <input type="number" id="payAmountInput" min="1" step="any" required placeholder="0" autofocus>
+        </div>
+
+        <div class="form-row">
+          <div class="field-wrap flex-1">
+            <label id="lblPayMethod">পেমেন্ট মাধ্যম</label>
+            <select id="payMethodSelect">
+              <option value="ক্যাশ (নগদ)">ক্যাশ (নগদ)</option>
+              <option value="বিকাশ (bKash)">বিকাশ (bKash)</option>
+              <option value="নগদ (Nagad)">নগদ (Nagad)</option>
+              <option value="ব্যাংক">ব্যাংক ট্রান্সফার</option>
+            </select>
+          </div>
+          <div class="field-wrap flex-1">
+            <label id="lblPayDate">তারিখ</label>
+            <input type="date" id="payDateInput" required>
+          </div>
+        </div>
+
+        <div class="field-wrap">
+          <label id="lblPayNote">নোট / মন্তব্য (ঐচ্ছিক)</label>
+          <input type="text" id="payNoteInput" placeholder="উদাঃ দোকানে নগদ ক্যাশ দিলেন">
+        </div>
+
+        <div class="modal-btn-row">
+          <button type="button" class="btn-cancel" id="cancelPaymentBtn">বাতিল</button>
+          <button type="submit" class="btn-submit" id="savePaymentSubmitBtn">✅ জমা নিশ্চিত করুন</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: CUSTOMER STATEMENT (KHATIAN) -->
+  <div id="statementModal" class="modal-overlay hidden">
+    <div class="simple-modal-box wide-box">
+      <div class="modal-top">
+        <div>
+          <h2 id="stName">বাবুল ভাই</h2>
+          <span class="st-phone" id="stPhone">017XXXXXXXX</span>
+        </div>
+        <button type="button" class="btn-close-modal" id="closeStatementModal">✕</button>
+      </div>
+
+      <div class="st-content">
+        <!-- 3 Big Figures -->
+        <div class="st-figures">
+          <div class="st-fig">
+            <span id="lblStSales">মোট মাল ক্রয়</span>
+            <strong id="stTotalSales">৳০</strong>
+          </div>
+          <div class="st-fig">
+            <span id="lblStPaid">মোট নগদ জমা</span>
+            <strong class="text-success" id="stTotalPaid">৳০</strong>
+          </div>
+          <div class="st-fig alert-fig">
+            <span id="lblStDue">বর্তমান বাকি (Due)</span>
+            <strong class="text-danger" id="stTotalDue">৳০</strong>
+          </div>
+        </div>
+
+        <!-- Instant Actions -->
+        <div class="st-actions">
+          <button type="button" id="stAddSaleBtn" class="btn-st-primary">＋ নতুন মাল বিক্রি</button>
+          <button type="button" id="stAddPayBtn" class="btn-st-success">৳ টাকা জমা</button>
+          <button type="button" id="stWhatsAppBtn" class="btn-st-wa">💬 হোয়াটসঅ্যাপ তাগাদা</button>
+          <button type="button" id="stPrintBtn" class="btn-st-outline">🖨️ রসিদ প্রিন্ট</button>
+          <button type="button" id="stDeleteBtn" class="btn-st-danger">🗑️ পার্টি মুছুন</button>
+        </div>
+
+        <!-- History Ledger -->
+        <h3 class="st-sec-title" id="lblStHistoryTitle">লেনদেনের ইতিহাস (Sales & Payments)</h3>
+        <div class="st-timeline" id="stTimeline">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: BACKUP & SETTINGS -->
+  <div id="settingsModal" class="modal-overlay hidden">
+    <div class="simple-modal-box small-box">
+      <div class="modal-top">
+        <h2 id="settingsHeading">সেটিংস ও ডেটা ব্যাকআপ</h2>
+        <button type="button" class="btn-close-modal" id="closeSettingsModal">✕</button>
+      </div>
+
+      <div class="settings-body">
+        <!-- Data Safety & Persistence -->
+        <div class="set-card">
+          <h4 id="setCard1Title">💾 ডেটা ব্যাকআপ ও সুরক্ষা (Data Backup)</h4>
+          <p id="setCard1Sub">আপনার ফোনের স্টোরেজে হিসাবের একটি ব্যাকআপ ফাইল নামিয়ে রাখুন। কোনো তথ্য হারাবে না।</p>
+          <div class="set-btn-group">
+            <button type="button" id="downloadBackupBtn" class="btn-submit">📥 ব্যাকআপ ফাইল ডাউনলোড (JSON)</button>
+            <label class="btn-cancel restore-label">
+              <span id="lblRestoreBtn">📤 ব্যাকআপ ফেরত আনুন (Restore)</span>
+              <input type="file" id="restoreFileInput" accept=".json,application/json" class="hidden">
+            </label>
+          </div>
+        </div>
+
+        <!-- Change PIN -->
+        <div class="set-card">
+          <h4 id="setCard2Title">🔐 পিন পরিবর্তন (Change PIN)</h4>
+          <div class="form-row">
+            <input type="password" id="oldPinInput" placeholder="পুরাতন পিন" maxlength="8">
+            <input type="password" id="newPinInput" placeholder="নতুন পিন" maxlength="8">
+            <button type="button" id="changePinBtn" class="btn-cancel" style="white-space:nowrap;">পিন বদলান</button>
+          </div>
+          <div id="pinChangeFeedback" class="pin-feedback"></div>
+        </div>
+
+        <!-- Reset -->
+        <div class="set-card danger-card">
+          <h4 class="text-danger" id="setCard3Title">⚠️ সমস্ত তথ্য পরিষ্কার (Reset Data)</h4>
+          <p id="setCard3Sub">সব কাস্টমার ও বিক্রয়ের হিসাব চিরতরে মুছে যাবে।</p>
+          <button type="button" id="resetAllDataBtn" class="btn-cancel text-danger">সকল তথ্য মুছুন</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRINTABLE RECEIPT TEMPLATE -->
+  <div id="printableReceipt" class="printable-slip hidden">
+    <div class="slip-wrap">
+      <div class="slip-header">
+        <h2>M.S Traders (এম. এস. ট্রেডার্স)</h2>
+        <p>রেক্সিন ও কৃত্রিম চামড়া পাইকারি ও খুচরা বিক্রেতা</p>
+        <p>সুরিতলা, ঢাকা-১১০০ | মোবাইল: ০১XXXXXXXXX</p>
+        <hr>
+        <h3>কাস্টমার হিসাব স্লিপ</h3>
+      </div>
+      <div class="slip-meta">
+        <div><strong>কাস্টমার:</strong> <span id="prCustName"></span></div>
+        <div><strong>তারিখ:</strong> <span id="prDate"></span></div>
+        <div><strong>মোবাইল:</strong> <span id="prPhone"></span></div>
+      </div>
+      <table class="slip-table">
+        <thead>
+          <tr>
+            <th>মালের বিবরণ</th>
+            <th>মাপ</th>
+            <th style="text-align:right">দর</th>
+            <th style="text-align:right">মোট টাকা</th>
+          </tr>
+        </thead>
+        <tbody id="prItemsList"></tbody>
+      </table>
+      <div class="slip-summary">
+        <div>মোট বিল: <strong id="prTotalSales">৳০</strong></div>
+        <div>মোট জমা: <strong id="prTotalPaid">৳০</strong></div>
+        <div class="slip-due">বর্তমান বাকি: <strong id="prTotalDue">৳০</strong></div>
+      </div>
+      <div class="slip-footer">
+        <p>M.S Traders এর সাথে ব্যবসা করার জন্য ধন্যবাদ।</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
