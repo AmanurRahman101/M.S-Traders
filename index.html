@@ -2,15 +2,15 @@
 <html lang="bn">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>M.S Traders | দেনা-পাওনা ও ডিজিটাল খাতা</title>
   <meta name="description" content="M.S Traders, Suritola, Dhaka - দেনা, পাওনা, বিক্রয় ও দোকান খরচের সহজ ডিজিটাল খাতা">
-  
-  <!-- Modern Editorial & Bengali Typography -->
+
+  <!-- Google Fonts: Plus Jakarta Sans (UI), Hind Siliguri (Bengali), JetBrains Mono (Financial Tabular) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="theme-light">
@@ -53,237 +53,285 @@
     </div>
   </div>
 
-  <!-- ==================== 2. MAIN APPLICATION ==================== -->
-  <div id="appContainer" class="app-container hidden">
+  <!-- ==================== 2. MAIN APPLICATION SHELL ==================== -->
+  <div id="appContainer" class="app-layout hidden">
 
-    <!-- Top Navigation Bar -->
-    <header class="top-nav">
-      <div class="nav-left">
-        <div class="shop-title-wrap">
-          <div class="shop-title-row">
-            <h1 class="shop-name">M.S Traders</h1>
-            <div id="cloudStatusBadge" class="cloud-badge local" title="ডেটাবেস স্ট্যাটাস">
-              <span class="cloud-dot"></span>
-              <span id="cloudStatusText">লোকাল মেমোরি</span>
-            </div>
-          </div>
-          <span class="shop-sub">এম. এস. ট্রেডার্স · সুরিতলা, ঢাকা</span>
+    <!-- DESKTOP FIXED SIDEBAR RAIL (>= 768px) -->
+    <aside class="desktop-rail">
+      <div class="rail-brand">
+        <div class="rail-brand-text">
+          <h1>M.S Traders</h1>
+          <p class="shop-sub">এম. এস. ট্রেডার্স · সুরিতলা</p>
+        </div>
+        <div id="cloudStatusBadge" class="cloud-badge local" title="ডেটাবেস স্ট্যাটাস">
+          <span class="cloud-dot"></span>
+          <span id="cloudStatusText">লোকাল</span>
         </div>
       </div>
 
-      <div class="nav-right">
-        <!-- Language Switcher -->
-        <button id="langToggleBtn" class="action-pill" title="English / বাংলা">
-          <span class="icon">🌐</span>
-          <span id="langLabel">English</span>
+      <!-- Primary Navigation Links -->
+      <nav class="rail-nav-links">
+        <button type="button" class="rail-nav-btn active" data-tab="pawna" id="tabPawnaBtn">
+          <span><span class="nav-icon">👥</span><span>কাস্টমার পাওনা</span></span>
+          <span class="rail-count-badge" id="badgePawnaCount">০</span>
         </button>
 
-        <!-- Dark/Light Theme -->
-        <button id="themeToggleBtn" class="action-pill" title="লাইট / ডার্ক মোড">
+        <button type="button" class="rail-nav-btn" data-tab="dena" id="tabDenaBtn">
+          <span><span class="nav-icon">🏭</span><span>মহাজন দেনা</span></span>
+          <span class="rail-count-badge" id="badgeDenaCount">০</span>
+        </button>
+
+        <button type="button" class="rail-nav-btn" data-tab="expense" id="tabExpenseBtn">
+          <span><span class="nav-icon">💸</span><span>দোকান খরচ</span></span>
+          <span class="rail-count-badge" id="badgeExpenseCount">০</span>
+        </button>
+      </nav>
+
+      <!-- Desktop Sidebar Footer Actions -->
+      <div class="rail-footer">
+        <button id="langToggleBtn" class="rail-icon-btn" title="English / বাংলা" style="width:auto; padding:0 10px;">
+          <span id="langLabel" style="font-size:0.8125rem; font-weight:600;">English</span>
+        </button>
+        <button id="themeToggleBtn" class="rail-icon-btn" title="লাইট / ডার্ক মোড">
           <span id="themeIcon">🌙</span>
         </button>
-
-        <!-- Backup & Settings -->
-        <button id="openSettingsBtn" class="action-pill" title="ব্যাকআপ ও সেটিংস">
+        <button id="openSettingsBtn" class="rail-icon-btn" title="ব্যাকআপ ও সেটিংস">
           <span>⚙</span>
         </button>
-
-        <!-- Lock -->
-        <button id="lockAppBtn" class="action-pill" title="লক করুন">
+        <button id="lockAppBtn" class="rail-icon-btn" title="লক করুন">
           <span>🔒</span>
         </button>
       </div>
-    </header>
+    </aside>
 
-    <!-- MAIN BODY -->
-    <main class="main-content">
+    <!-- MAIN VIEWPORT AREA -->
+    <div class="main-viewport">
 
-      <!-- 1. BIG 3 FINANCIAL PILLARS: PAWNA (Due) | DENA (Liability) | NET CASH -->
-      <section class="summary-banner">
-        
-        <!-- PAWNA (Receivables: What customers owe us) -->
-        <div class="summary-box pawna-box">
-          <div class="box-header">
-            <span class="box-label" id="lblPawnaTitle">মোট পাওনা (PAWNA / Dues)</span>
-            <span class="box-tag pawna-tag">আদায় বাকি</span>
-          </div>
-          <div class="box-amount text-pawna" id="statPawna">৳০</div>
-          <div class="box-note" id="notePawna">কাস্টমারদের কাছে আমাদের বাকি পাওনা</div>
+      <!-- MOBILE TOP HEADER (< 768px) -->
+      <header class="mobile-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <h1 class="mobile-brand-title">M.S Traders</h1>
+          <span class="badge-pill neutral-tag" style="font-size:0.6875rem;">সুরিতলা</span>
         </div>
-
-        <!-- DENA (Liabilities: What we owe to suppliers/mills/others) -->
-        <div class="summary-box dena-box">
-          <div class="box-header">
-            <span class="box-label" id="lblDenaTitle">মোট দেনা (DENA / Liabilities)</span>
-            <span class="box-tag dena-tag">পরিশোধ বাকি</span>
-          </div>
-          <div class="box-amount text-dena" id="statDena">৳০</div>
-          <div class="box-note" id="noteDena">মহাজন ও সাপ্লায়ারদের কাছে আমাদের দেনা</div>
+        <div class="mobile-header-actions">
+          <button type="button" id="mobileThemeBtn" class="mobile-header-btn" title="থিম পরিবর্তন">🌙</button>
+          <button type="button" id="mobileSettingsBtn" class="mobile-header-btn" title="সেটিংস">⚙</button>
+          <button type="button" id="mobileLockBtn" class="mobile-header-btn" title="লক">🔒</button>
         </div>
+      </header>
 
-        <!-- TODAY'S NET CASH (Cash In minus Cash Out & Expenses) -->
-        <div class="summary-box cash-box">
-          <div class="box-header">
-            <span class="box-label" id="lblCashTitle">আজকের হাতে ক্যাশ (Net Cash)</span>
-            <span class="box-tag cash-tag">আজকের ক্যাশ</span>
+      <!-- MAIN CONTENT CONTAINER -->
+      <main class="content-container">
+
+        <!-- 1. THE 3 FINANCIAL PILLARS: PAWNA (Due) | DENA (Liability) | NET CASH -->
+        <section class="kpi-strip">
+          
+          <!-- PAWNA (Receivables: What customers owe us) -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title" id="lblPawnaTitle">মোট পাওনা (PAWNA / Dues)</span>
+              <span class="badge-pill pawna-tag">আদায় বাকি</span>
+            </div>
+            <div class="kpi-amount text-pawna" id="statPawna">৳০</div>
+            <div class="kpi-note" id="notePawna">কাস্টমারদের কাছে আমাদের বাকি পাওনা</div>
           </div>
-          <div class="box-amount text-cash" id="statTodayCash">৳০</div>
-          <div class="box-note" id="noteCash">আজকের নগদ আদায় − পরিশোধ ও খরচ</div>
-        </div>
-      </section>
 
-      <!-- 2. FOUR BIG ACTION BUTTONS (ZERO ENTRY BARRIER) -->
-      <section class="quick-action-grid">
-        <!-- New Sale (Pawna) -->
-        <button type="button" id="btnQuickSale" class="btn-action-tile tile-sale">
-          <div class="tile-icon">＋</div>
-          <div class="tile-content">
-            <strong id="btnSaleText">নতুন মাল বিক্রি</strong>
-            <small id="btnSaleSub">গজ ও গিরা মাপে বাকি বা ক্যাশ</small>
+          <!-- DENA (Liabilities: What we owe suppliers/mills) -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title" id="lblDenaTitle">মোট দেনা (DENA / Liabilities)</span>
+              <span class="badge-pill dena-tag">পরিশোধ বাকি</span>
+            </div>
+            <div class="kpi-amount text-dena" id="statDena">৳০</div>
+            <div class="kpi-note" id="noteDena">মহাজন ও সাপ্লায়ারদের কাছে আমাদের দেনা</div>
           </div>
-        </button>
 
-        <!-- Receive Customer Cash -->
-        <button type="button" id="btnQuickPayment" class="btn-action-tile tile-cust-pay">
-          <div class="tile-icon">৳</div>
-          <div class="tile-content">
-            <strong id="btnPayText">কাস্টমার জমা গ্রহণ</strong>
-            <small id="btnPaySub">পাওনা টাকা আদায় এন্ট্রি</small>
+          <!-- TODAY'S NET CASH (In hand: Cash in minus cash out) -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title" id="lblCashTitle">আজকের হাতে ক্যাশ (Net Cash)</span>
+              <span class="badge-pill cash-tag">আজকের ক্যাশ</span>
+            </div>
+            <div class="kpi-amount text-cash" id="statTodayCash">৳০</div>
+            <div class="kpi-note" id="noteCash">আজকের নগদ আদায় − পরিশোধ ও খরচ</div>
           </div>
-        </button>
+        </section>
 
-        <!-- New Supplier Bill (Dena) -->
-        <button type="button" id="btnQuickSupplierBill" class="btn-action-tile tile-dena">
-          <div class="tile-icon">🏭</div>
-          <div class="tile-content">
-            <strong id="btnDenaText">মহাজন দেনা এন্ট্রি</strong>
-            <small id="btnDenaSub">সাপ্লায়ার বা মিল থেকে মাল ক্রয়</small>
+        <!-- 2. FOUR BIG ACTION BUTTONS (ZERO ENTRY BARRIER) -->
+        <section class="action-tiles-grid">
+          <!-- New Sale (Pawna) -->
+          <button type="button" id="btnQuickSale" class="action-tile-btn tile-sale">
+            <div class="action-tile-icon">＋</div>
+            <div class="action-tile-content">
+              <strong id="btnSaleText">নতুন মাল বিক্রি</strong>
+              <small id="btnSaleSub">গজ ও গিরা মাপে বাকি বা ক্যাশ</small>
+            </div>
+          </button>
+
+          <!-- Receive Customer Cash -->
+          <button type="button" id="btnQuickPayment" class="action-tile-btn tile-pay">
+            <div class="action-tile-icon">৳</div>
+            <div class="action-tile-content">
+              <strong id="btnPayText">কাস্টমার জমা গ্রহণ</strong>
+              <small id="btnPaySub">পাওনা টাকা আদায় এন্ট্রি</small>
+            </div>
+          </button>
+
+          <!-- New Supplier Bill (Dena) -->
+          <button type="button" id="btnQuickSupplierBill" class="action-tile-btn tile-dena">
+            <div class="action-tile-icon">🏭</div>
+            <div class="action-tile-content">
+              <strong id="btnDenaText">মহাজন দেনা এন্ট্রি</strong>
+              <small id="btnDenaSub">সাপ্লায়ার বা মিল থেকে মাল ক্রয়</small>
+            </div>
+          </button>
+
+          <!-- Daily Shop Expense -->
+          <button type="button" id="btnQuickExpense" class="action-tile-btn tile-expense">
+            <div class="action-tile-icon">💸</div>
+            <div class="action-tile-content">
+              <strong id="btnExpenseText">দোকান খরচ লিখুন</strong>
+              <small id="btnExpenseSub">চা, লেবার, গাড়ি ভাড়া ইত্যাদি</small>
+            </div>
+          </button>
+        </section>
+
+        <!-- ==================== SECTION A: PAWNA (CUSTOMERS) ==================== -->
+        <section id="sectionPawna" class="tab-pane">
+          <div class="view-segmented-wrap">
+            <h2 style="font-size:1.125rem; font-weight:700; letter-spacing:-0.02em;">কাস্টমার পাওনা তালিকা (Pawna)</h2>
           </div>
-        </button>
+          <div class="ledger-card-wrapper">
+            <div class="ledger-toolbar">
+              <div class="search-field-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="pawnaSearchInput" placeholder="কাস্টমারের নাম বা ফোন লিখুন..." autocomplete="off">
+                <button type="button" id="clearPawnaSearch" class="search-clear-btn hidden">✕</button>
+              </div>
 
-        <!-- Daily Shop Expense -->
-        <button type="button" id="btnQuickExpense" class="btn-action-tile tile-expense">
-          <div class="tile-icon">💸</div>
-          <div class="tile-content">
-            <strong id="btnExpenseText">দোকান খরচ লিখুন</strong>
-            <small id="btnExpenseSub">চা, লেবার, গাড়ি ভাড়া ইত্যাদি</small>
+              <div class="filter-pills-row">
+                <button type="button" class="filter-pill active" data-filter="all" id="pillPawnaAll">সবাই</button>
+                <button type="button" class="filter-pill" data-filter="due" id="pillPawnaDue">বাকি আছে (Due)</button>
+                <button type="button" class="filter-pill" data-filter="paid" id="pillPawnaPaid">পরিশোধিত</button>
+              </div>
+            </div>
+
+            <!-- Customer Cards List -->
+            <div class="records-list" id="customerListContainer"></div>
+
+            <!-- Empty State -->
+            <div id="emptyPawnaState" class="empty-list-card hidden">
+              <div class="empty-icon">📖</div>
+              <h3 id="emptyPawnaTitle">কোনো কাস্টমার পাওনা নেই</h3>
+              <p id="emptyPawnaSub">উপরে "নতুন মাল বিক্রি" বাটনে চাপ দিয়ে প্রথম হিসাব শুরু করুন।</p>
+            </div>
           </div>
-        </button>
-      </section>
+        </section>
 
-      <!-- 3. SLEEK SEGMENTED NAVIGATION TABS -->
-      <div class="nav-segmented-control">
-        <button type="button" class="seg-btn active" data-tab="pawna" id="tabPawnaBtn">
-          <span>👥 কাস্টমার পাওনা (PAWNA)</span>
-          <span class="seg-badge" id="badgePawnaCount">০</span>
-        </button>
-        <button type="button" class="seg-btn" data-tab="dena" id="tabDenaBtn">
-          <span>🏭 মহাজন দেনা (DENA)</span>
-          <span class="seg-badge" id="badgeDenaCount">০</span>
-        </button>
-        <button type="button" class="seg-btn" data-tab="expense" id="tabExpenseBtn">
-          <span>💸 দোকান খরচ (EXPENSES)</span>
-          <span class="seg-badge" id="badgeExpenseCount">০</span>
-        </button>
+        <!-- ==================== SECTION B: DENA (SUPPLIERS / LIABILITIES) ==================== -->
+        <section id="sectionDena" class="tab-pane hidden">
+          <div class="view-segmented-wrap">
+            <h2 style="font-size:1.125rem; font-weight:700; letter-spacing:-0.02em;">মহাজন দেনা হিসাব (Dena)</h2>
+          </div>
+          <div class="ledger-card-wrapper">
+            <div class="ledger-toolbar">
+              <div class="search-field-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="denaSearchInput" placeholder="মহাজন বা সাপ্লায়ারের নাম দিয়ে খুঁজুন..." autocomplete="off">
+                <button type="button" id="clearDenaSearch" class="search-clear-btn hidden">✕</button>
+              </div>
+
+              <div class="filter-pills-row">
+                <button type="button" class="filter-pill active" data-filter="all" id="pillDenaAll">সবাই</button>
+                <button type="button" class="filter-pill" data-filter="due" id="pillDenaDue">দেনা বাকি আছে</button>
+                <button type="button" class="filter-pill" data-filter="paid" id="pillDenaPaid">পরিশোধিত</button>
+              </div>
+            </div>
+
+            <!-- Supplier Cards List -->
+            <div class="records-list" id="supplierListContainer"></div>
+
+            <!-- Empty State -->
+            <div id="emptyDenaState" class="empty-list-card hidden">
+              <div class="empty-icon">🏭</div>
+              <h3 id="emptyDenaTitle">কোনো মহাজন বা সাপ্লায়ার দেনা নেই</h3>
+              <p id="emptyDenaSub">উপরে "মহাজন দেনা এন্ট্রি" বাটনে চাপ দিয়ে নতুন দেনা হিসাব যোগ করুন।</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== SECTION C: DAILY EXPENSES (দোকান খরচ) ==================== -->
+        <section id="sectionExpense" class="tab-pane hidden">
+          <div class="view-segmented-wrap">
+            <h2 style="font-size:1.125rem; font-weight:700; letter-spacing:-0.02em;">দৈনিক দোকান খরচ (Expenses)</h2>
+          </div>
+          <div class="ledger-card-wrapper">
+            <div class="expense-strip-header">
+              <div>
+                <span class="micro-label" id="lblTodayExpTitle">আজকের মোট দোকান খরচ</span>
+                <div class="kpi-amount" style="font-size:1.5rem; margin-top:2px;" id="statTodayExpense">৳০</div>
+              </div>
+              <button type="button" id="btnOpenExpenseModal" class="btn-submit" style="min-height:40px; padding:8px 16px; font-size:0.875rem;">＋ খরচ যোগ করুন</button>
+            </div>
+
+            <!-- Expense List -->
+            <div class="records-list" id="expenseListContainer"></div>
+
+            <!-- Empty State -->
+            <div id="emptyExpenseState" class="empty-list-card hidden">
+              <div class="empty-icon">☕</div>
+              <h3 id="emptyExpenseTitle">আজকে কোনো দোকান খরচ লেখা হয়নি</h3>
+              <p id="emptyExpenseSub">চা-নাস্তা, পরিবহন বা অন্যান্য খরচ যোগ করতে বাটনে চাপ দিন।</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Data Persistence & Safety Notice -->
+        <footer class="persistence-bar">
+          <span class="persist-badge">💾 তথ্য অফলাইনে ও ক্লাউডে অটো-সেভ হচ্ছে</span>
+          <div class="persist-actions">
+            <button type="button" id="quickBackupBtn" class="link-action">📥 সম্পূর্ণ ব্যাকআপ (JSON)</button>
+            <button type="button" id="quickCsvBtn" class="link-action">📊 এক্সেল ফাইল (CSV)</button>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <!-- MOBILE FIXED BOTTOM NAVIGATION BAR (< 768px) -->
+    <nav class="mobile-bottom-nav">
+      <button type="button" class="mobile-nav-item active" data-tab="pawna" id="mobileTabPawna">
+        <span class="m-icon">👥</span>
+        <span>পাওনা</span>
+      </button>
+
+      <button type="button" class="mobile-nav-item" data-tab="dena" id="mobileTabDena">
+        <span class="m-icon">🏭</span>
+        <span>দেনা</span>
+      </button>
+
+      <!-- Center Floating Quick Action Button -->
+      <div class="mobile-fab-wrap">
+        <button type="button" class="mobile-primary-fab" id="mobileFabBtn" title="নতুন এন্ট্রি">＋</button>
       </div>
 
-      <!-- ==================== SECTION A: PAWNA (CUSTOMERS) ==================== -->
-      <section id="sectionPawna" class="tab-pane">
-        <div class="ledger-card">
-          <div class="ledger-toolbar">
-            <div class="search-input-wrap">
-              <span class="search-icon">🔍</span>
-              <input type="text" id="pawnaSearchInput" placeholder="কাস্টমারের নাম বা ফোন লিখুন..." autocomplete="off">
-              <button type="button" id="clearPawnaSearch" class="clear-search-btn hidden">✕</button>
-            </div>
+      <button type="button" class="mobile-nav-item" data-tab="expense" id="mobileTabExpense">
+        <span class="m-icon">💸</span>
+        <span>খরচ</span>
+      </button>
 
-            <div class="filter-pill-group">
-              <button type="button" class="f-pill active" data-filter="all" id="pillPawnaAll">সবাই</button>
-              <button type="button" class="f-pill" data-filter="due" id="pillPawnaDue">বাকি আছে (Due)</button>
-              <button type="button" class="f-pill" data-filter="paid" id="pillPawnaPaid">পরিশোধিত</button>
-            </div>
-          </div>
-
-          <!-- Customer Cards List -->
-          <div class="records-cards-list" id="customerListContainer"></div>
-
-          <!-- Empty State -->
-          <div id="emptyPawnaState" class="empty-list-card hidden">
-            <div class="empty-icon">📖</div>
-            <h3 id="emptyPawnaTitle">কোনো কাস্টমার পাওনা নেই</h3>
-            <p id="emptyPawnaSub">উপরে "নতুন মাল বিক্রি" বাটনে চাপ দিয়ে প্রথম হিসাব শুরু করুন।</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== SECTION B: DENA (SUPPLIERS / LIABILITIES) ==================== -->
-      <section id="sectionDena" class="tab-pane hidden">
-        <div class="ledger-card">
-          <div class="ledger-toolbar">
-            <div class="search-input-wrap">
-              <span class="search-icon">🔍</span>
-              <input type="text" id="denaSearchInput" placeholder="মহাজন বা সাপ্লায়ারের নাম দিয়ে খুঁজুন..." autocomplete="off">
-              <button type="button" id="clearDenaSearch" class="clear-search-btn hidden">✕</button>
-            </div>
-
-            <div class="filter-pill-group">
-              <button type="button" class="f-pill active" data-filter="all" id="pillDenaAll">সবাই</button>
-              <button type="button" class="f-pill" data-filter="due" id="pillDenaDue">দেনা বাকি আছে</button>
-              <button type="button" class="f-pill" data-filter="paid" id="pillDenaPaid">পরিশোধিত</button>
-            </div>
-          </div>
-
-          <!-- Supplier Cards List -->
-          <div class="records-cards-list" id="supplierListContainer"></div>
-
-          <!-- Empty State -->
-          <div id="emptyDenaState" class="empty-list-card hidden">
-            <div class="empty-icon">🏭</div>
-            <h3 id="emptyDenaTitle">কোনো মহাজন বা সাপ্লায়ার দেনা নেই</h3>
-            <p id="emptyDenaSub">উপরে "মহাজন দেনা এন্ট্রি" বাটনে চাপ দিয়ে নতুন দেনা হিসাব যোগ করুন।</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== SECTION C: DAILY EXPENSES (দোকান খরচ) ==================== -->
-      <section id="sectionExpense" class="tab-pane hidden">
-        <div class="ledger-card">
-          <div class="expense-summary-strip">
-            <div>
-              <span class="sub-label" id="lblTodayExpTitle">আজকের মোট দোকান খরচ</span>
-              <strong class="exp-total-val" id="statTodayExpense">৳০</strong>
-            </div>
-            <button type="button" id="btnOpenExpenseModal" class="btn-tile-small">＋ খরচ যোগ করুন</button>
-          </div>
-
-          <!-- Expense List -->
-          <div class="expense-timeline" id="expenseListContainer"></div>
-
-          <!-- Empty State -->
-          <div id="emptyExpenseState" class="empty-list-card hidden">
-            <div class="empty-icon">☕</div>
-            <h3 id="emptyExpenseTitle">আজকে কোনো দোকান খরচ লেখা হয়নি</h3>
-            <p id="emptyExpenseSub">চা-নাস্তা, পরিবহন বা অন্যান্য খরচ যোগ করতে বাটনে চাপ দিন।</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Data Persistence & Safety Notice -->
-      <footer class="persistence-bar">
-        <span class="persist-badge">💾 তথ্য এই ফোনে ও ক্লাউডে অটো-সেভ হচ্ছে</span>
-        <div class="persist-actions">
-          <button type="button" id="quickBackupBtn" class="link-action">📥 সম্পূর্ণ ব্যাকআপ নামান (JSON)</button>
-          <button type="button" id="quickCsvBtn" class="link-action">📊 এক্সেল ফাইল (CSV)</button>
-        </div>
-      </footer>
-    </main>
+      <button type="button" class="mobile-nav-item" id="mobileMenuBtn">
+        <span class="m-icon">⚙</span>
+        <span>সেটিংস</span>
+      </button>
+    </nav>
   </div>
 
-  <!-- ==================== 3. MODALS (STREAMLINED & ELEGANT) ==================== -->
+  <!-- ==================== 3. MODALS (BOTTOM SHEETS ON MOBILE) ==================== -->
 
   <!-- MODAL 1: NEW SALE (PAWNA / কাস্টমার বিক্রয় - GAUZE & GHIRA) -->
   <div id="saleModal" class="modal-overlay hidden">
     <div class="simple-modal-box">
+      <div class="sheet-drag-handle"></div>
       <div class="modal-top">
         <h2 id="saleModalHeading">নতুন মাল বিক্রি (New Sale)</h2>
         <button type="button" class="btn-close-modal" id="closeSaleModal">✕</button>
@@ -384,6 +432,7 @@
   <!-- MODAL 2: CUSTOMER CASH COLLECTION (PAWNA আদায়) -->
   <div id="paymentModal" class="modal-overlay hidden">
     <div class="simple-modal-box small-box">
+      <div class="sheet-drag-handle"></div>
       <div class="modal-top">
         <h2 id="payModalHeading">কাস্টমার জমা গ্রহণ (Receive Cash)</h2>
         <button type="button" class="btn-close-modal" id="closePaymentModal">✕</button>
@@ -433,6 +482,7 @@
   <!-- MODAL 3: SUPPLIER PURCHASE & DENA ENTRY (মহাজন দেনা এন্ট্রি) -->
   <div id="supplierModal" class="modal-overlay hidden">
     <div class="simple-modal-box">
+      <div class="sheet-drag-handle"></div>
       <div class="modal-top">
         <h2 id="supModalHeading">মহাজন দেনা এন্ট্রি (Supplier Liability)</h2>
         <button type="button" class="btn-close-modal" id="closeSupplierModal">✕</button>
@@ -495,6 +545,7 @@
   <!-- MODAL 4: PAY SUPPLIER DENA (দেনা পরিশোধ) -->
   <div id="paySupplierModal" class="modal-overlay hidden">
     <div class="simple-modal-box small-box">
+      <div class="sheet-drag-handle"></div>
       <div class="modal-top">
         <h2 id="paySupModalHeading">মহাজন দেনা পরিশোধ (Pay Supplier)</h2>
         <button type="button" class="btn-close-modal" id="closePaySupModal">✕</button>
@@ -543,6 +594,7 @@
   <!-- MODAL 5: DAILY SHOP EXPENSE (দোকান খরচ) -->
   <div id="expenseModal" class="modal-overlay hidden">
     <div class="simple-modal-box small-box">
+      <div class="sheet-drag-handle"></div>
       <div class="modal-top">
         <h2 id="expModalHeading">দোকান খরচ লিখুন (Daily Expense)</h2>
         <button type="button" class="btn-close-modal" id="closeExpenseModal">✕</button>
@@ -589,10 +641,11 @@
   <!-- MODAL 6: CUSTOMER STATEMENT (PAWNA KHATIAN) -->
   <div id="statementModal" class="modal-overlay hidden">
     <div class="simple-modal-box wide-box">
+      <div class="sheet-drag-handle"></div>
       <div class="modal-top">
         <div>
           <h2 id="stName">বাবুল ভাই</h2>
-          <span class="st-phone" id="stPhone">017XXXXXXXX</span>
+          <span class="party-phone" id="stPhone">017XXXXXXXX</span>
         </div>
         <button type="button" class="btn-close-modal" id="closeStatementModal">✕</button>
       </div>
@@ -607,7 +660,7 @@
             <span id="lblStPaid">মোট নগদ জমা</span>
             <strong class="text-cash" id="stTotalPaid">৳০</strong>
           </div>
-          <div class="st-fig alert-fig">
+          <div class="st-fig">
             <span id="lblStDue">বর্তমান পাওনা (Pawna)</span>
             <strong class="text-pawna" id="stTotalDue">৳০</strong>
           </div>
@@ -630,10 +683,11 @@
   <!-- MODAL 7: SUPPLIER STATEMENT (DENA KHATIAN) -->
   <div id="supStatementModal" class="modal-overlay hidden">
     <div class="simple-modal-box wide-box">
+      <div class="sheet-drag-handle"></div>
       <div class="modal-top">
         <div>
           <h2 id="supStName">মেঘনা রেক্সিন মিল</h2>
-          <span class="st-phone" id="supStPhone">018XXXXXXXX</span>
+          <span class="party-phone" id="supStPhone">018XXXXXXXX</span>
         </div>
         <button type="button" class="btn-close-modal" id="closeSupStatementModal">✕</button>
       </div>
@@ -648,7 +702,7 @@
             <span id="lblSupStPaid">মোট পরিশোধ</span>
             <strong class="text-cash" id="supStTotalPaid">৳০</strong>
           </div>
-          <div class="st-fig alert-fig dena-alert">
+          <div class="st-fig">
             <span id="lblSupStDue">আমাদের বর্তমান দেনা (Dena)</span>
             <strong class="text-dena" id="supStTotalDue">৳০</strong>
           </div>
@@ -669,6 +723,7 @@
   <!-- MODAL 8: BACKUP & SETTINGS -->
   <div id="settingsModal" class="modal-overlay hidden">
     <div class="simple-modal-box small-box">
+      <div class="sheet-drag-handle"></div>
       <div class="modal-top">
         <h2 id="settingsHeading">সেটিংস ও ডেটা ব্যাকআপ</h2>
         <button type="button" class="btn-close-modal" id="closeSettingsModal">✕</button>
@@ -676,15 +731,15 @@
 
       <div class="settings-body">
         <!-- Permanent Cloud Database Sync (Supabase) -->
-        <div class="set-card cloud-set-card">
-          <h4>☁️ পার্মানেন্ট ক্লাউড ডেটাবেস (Supabase Cloud Sync)</h4>
+        <div class="set-card">
+          <h3 style="font-size:0.9375rem; font-weight:700;">☁️ পার্মানেন্ট ক্লাউড ডেটাবেস (Supabase Cloud Sync)</h3>
           <p>সব ফোনে ও কম্পিউটারে লাইভ সিঙ্ক থাকবে এবং ডেটা কখনোই মুছে যাবে না।</p>
-          <div class="field-wrap" style="margin-bottom:8px;">
-            <label style="font-size:11px;">Supabase Project URL</label>
+          <div class="field-wrap">
+            <label style="font-size:0.75rem;">Supabase Project URL</label>
             <input type="text" id="supabaseUrlInput" placeholder="https://xxxxxx.supabase.co" autocomplete="off">
           </div>
-          <div class="field-wrap" style="margin-bottom:10px;">
-            <label style="font-size:11px;">Supabase Anon Key</label>
+          <div class="field-wrap">
+            <label style="font-size:0.75rem;">Supabase Anon Key</label>
             <input type="password" id="supabaseKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." autocomplete="off">
           </div>
           <div class="form-row">
@@ -696,12 +751,12 @@
 
         <!-- Data Safety & Persistence -->
         <div class="set-card">
-          <h4 id="setCard1Title">💾 অফলাইন ব্যাকআপ ফাইল (JSON Backup)</h4>
+          <h3 id="setCard1Title" style="font-size:0.9375rem; font-weight:700;">💾 অফলাইন ব্যাকআপ ফাইল (JSON Backup)</h3>
           <p id="setCard1Sub">আপনার ফোনের মেমোরিতে হিসাবের সম্পূর্ণ একটি ব্যাকআপ ফাইল নামিয়ে রাখুন।</p>
-          <div class="set-btn-group">
-            <button type="button" id="downloadBackupBtn" class="btn-submit">📥 ব্যাকআপ ফাইল ডাউনলোড (JSON)</button>
-            <label class="btn-cancel restore-label">
-              <span id="lblRestoreBtn">📤 ব্যাকআপ ফেরত আনুন (Restore)</span>
+          <div class="form-row">
+            <button type="button" id="downloadBackupBtn" class="btn-submit flex-1">📥 ডাউনলোড (JSON)</button>
+            <label class="btn-cancel flex-1" style="text-align:center; cursor:pointer;">
+              <span id="lblRestoreBtn">📤 ফেরত আনুন (Restore)</span>
               <input type="file" id="restoreFileInput" accept=".json,application/json" class="hidden">
             </label>
           </div>
@@ -709,7 +764,7 @@
 
         <!-- Change PIN -->
         <div class="set-card">
-          <h4 id="setCard2Title">🔐 পিন পরিবর্তন (Change PIN)</h4>
+          <h3 id="setCard2Title" style="font-size:0.9375rem; font-weight:700;">🔐 পিন পরিবর্তন (Change PIN)</h3>
           <div class="form-row">
             <input type="password" id="oldPinInput" placeholder="পুরাতন পিন" maxlength="8">
             <input type="password" id="newPinInput" placeholder="নতুন পিন" maxlength="8">
@@ -719,8 +774,8 @@
         </div>
 
         <!-- Reset -->
-        <div class="set-card danger-card">
-          <h4 class="text-danger" id="setCard3Title">⚠️ সমস্ত তথ্য পরিষ্কার (Reset Data)</h4>
+        <div class="set-card">
+          <h3 class="text-danger" id="setCard3Title" style="font-size:0.9375rem; font-weight:700;">⚠️ সমস্ত তথ্য পরিষ্কার (Reset Data)</h3>
           <p id="setCard3Sub">সব কাস্টমার, দেনা ও খরচের হিসাব চিরতরে মুছে যাবে।</p>
           <button type="button" id="resetAllDataBtn" class="btn-cancel text-danger">সকল তথ্য মুছুন</button>
         </div>
@@ -743,23 +798,23 @@
         <div><strong>তারিখ:</strong> <span id="prDate"></span></div>
         <div><strong>মোবাইল:</strong> <span id="prPhone"></span></div>
       </div>
-      <table class="slip-table">
+      <table class="slip-table" style="width:100%; border-collapse:collapse; margin-top:16px;">
         <thead>
-          <tr>
-            <th>মালের বিবরণ</th>
-            <th>মাপ</th>
-            <th style="text-align:right">দর</th>
-            <th style="text-align:right">মোট টাকা</th>
+          <tr style="border-bottom:1px solid #000;">
+            <th style="text-align:left; padding:8px 0;">মালের বিবরণ</th>
+            <th style="text-align:left; padding:8px 0;">মাপ</th>
+            <th style="text-align:right; padding:8px 0;">দর</th>
+            <th style="text-align:right; padding:8px 0;">মোট টাকা</th>
           </tr>
         </thead>
         <tbody id="prItemsList"></tbody>
       </table>
-      <div class="slip-summary">
+      <div class="slip-summary" style="margin-top:16px; border-top:1px solid #000; padding-top:8px;">
         <div>মোট বিল: <strong id="prTotalSales">৳০</strong></div>
         <div>মোট জমা: <strong id="prTotalPaid">৳০</strong></div>
-        <div class="slip-due">বর্তমান বাকি (পাওনা): <strong id="prTotalDue">৳০</strong></div>
+        <div style="font-size:16px; font-weight:bold; margin-top:4px;">বর্তমান বাকি (পাওনা): <strong id="prTotalDue">৳০</strong></div>
       </div>
-      <div class="slip-footer">
+      <div class="slip-footer" style="margin-top:24px; text-align:center; font-size:12px;">
         <p>M.S Traders এর সাথে ব্যবসা করার জন্য ধন্যবাদ।</p>
       </div>
     </div>

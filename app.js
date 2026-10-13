@@ -780,15 +780,15 @@
       const isPaid = st.due === 0;
 
       return `
-        <div class="party-card" data-id="${escape(c.id)}">
+        <div class="party-card" data-id="${escape(c.id)}" data-label="Customer">
           <div class="party-card-left">
             <span class="party-name">${escape(c.name)}</span>
             <span class="party-phone">📞 ${escape(c.phone)} · 📍 ${escape(c.address || 'সুরিতলা')}</span>
           </div>
 
           <div class="party-card-center">
-            <span class="party-due-amount ${isPaid ? 'text-cash' : 'text-pawna'}">${formatMoney(st.due)}</span>
-            <span class="party-due-status ${isPaid ? 'cash-tag' : 'pawna-tag'}">
+            <span class="party-due-amount tabular-nums ${isPaid ? 'text-cash' : 'text-pawna'}">${formatMoney(st.due)}</span>
+            <span class="party-due-status badge-pill ${isPaid ? 'cash-tag' : 'pawna-tag'}">
               ${isPaid ? L.status_paid : L.status_due}
             </span>
           </div>
@@ -846,15 +846,15 @@
       const isPaid = st.due === 0;
 
       return `
-        <div class="party-card supplier-card" data-id="${escape(s.id)}">
+        <div class="party-card supplier-card" data-id="${escape(s.id)}" data-label="Supplier">
           <div class="party-card-left">
             <span class="party-name">🏭 ${escape(s.name)}</span>
             <span class="party-phone">📞 ${escape(s.phone)} · 📍 ${escape(s.address || 'সাপ্লায়ার/মিল')}</span>
           </div>
 
           <div class="party-card-center">
-            <span class="party-due-amount ${isPaid ? 'text-cash' : 'text-dena'}">${formatMoney(st.due)}</span>
-            <span class="party-due-status ${isPaid ? 'cash-tag' : 'dena-tag'}">
+            <span class="party-due-amount tabular-nums ${isPaid ? 'text-cash' : 'text-dena'}">${formatMoney(st.due)}</span>
+            <span class="party-due-status badge-pill ${isPaid ? 'cash-tag' : 'dena-tag'}">
               ${isPaid ? L.status_paid : L.status_dena_due}
             </span>
           </div>
@@ -891,14 +891,14 @@
     el.emptyExpenseState.classList.add('hidden');
 
     el.expenseListContainer.innerHTML = sorted.map(e => `
-      <div class="exp-item-row">
+      <div class="exp-item-row" data-label="Expense">
         <div>
           <span class="exp-cat-badge">${escape(e.category)}</span>
           <strong style="margin-left: 8px; font-size: 13px;">${escape(e.note || e.category)}</strong>
           <small style="display:block; color:var(--text-muted); font-size: 11px; margin-top:2px;">${e.date}</small>
         </div>
         <div>
-          <strong class="text-pawna" style="font-size: 16px; font-family: var(--font-mono);">−${formatMoney(e.amount)}</strong>
+          <strong class="text-pawna tabular-nums" style="font-size: 16px;">−${formatMoney(e.amount)}</strong>
         </div>
       </div>
     `).join('');
@@ -910,6 +910,13 @@
     el.tabPawnaBtn.classList.toggle('active', tab === 'pawna');
     el.tabDenaBtn.classList.toggle('active', tab === 'dena');
     el.tabExpenseBtn.classList.toggle('active', tab === 'expense');
+
+    const mPawna = document.getElementById('mobileTabPawna');
+    const mDena = document.getElementById('mobileTabDena');
+    const mExp = document.getElementById('mobileTabExpense');
+    if (mPawna) mPawna.classList.toggle('active', tab === 'pawna');
+    if (mDena) mDena.classList.toggle('active', tab === 'dena');
+    if (mExp) mExp.classList.toggle('active', tab === 'expense');
 
     el.sectionPawna.classList.toggle('hidden', tab !== 'pawna');
     el.sectionDena.classList.toggle('hidden', tab !== 'dena');
@@ -1493,6 +1500,8 @@
     document.body.classList.toggle('theme-dark', t === 'dark');
     document.body.classList.toggle('theme-light', t !== 'dark');
     el.themeIcon.textContent = t === 'dark' ? '☀️' : '🌙';
+    const mobileThemeBtn = document.getElementById('mobileThemeBtn');
+    if (mobileThemeBtn) mobileThemeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
   }
 
   // ===================================================================
@@ -1547,6 +1556,31 @@
       el.settingsModal.classList.remove('hidden');
     });
     el.lockAppBtn.addEventListener('click', lockApp);
+
+    // Mobile Navigation & Header Controls
+    const mobileThemeBtn = document.getElementById('mobileThemeBtn');
+    if (mobileThemeBtn) mobileThemeBtn.addEventListener('click', () => setTheme(state.currentTheme === 'dark' ? 'light' : 'dark'));
+
+    const mobileSettingsBtn = document.getElementById('mobileSettingsBtn');
+    if (mobileSettingsBtn) mobileSettingsBtn.addEventListener('click', () => el.openSettingsBtn.click());
+
+    const mobileLockBtn = document.getElementById('mobileLockBtn');
+    if (mobileLockBtn) mobileLockBtn.addEventListener('click', lockApp);
+
+    const mobileTabPawna = document.getElementById('mobileTabPawna');
+    if (mobileTabPawna) mobileTabPawna.addEventListener('click', () => switchTab('pawna'));
+
+    const mobileTabDena = document.getElementById('mobileTabDena');
+    if (mobileTabDena) mobileTabDena.addEventListener('click', () => switchTab('dena'));
+
+    const mobileTabExpense = document.getElementById('mobileTabExpense');
+    if (mobileTabExpense) mobileTabExpense.addEventListener('click', () => switchTab('expense'));
+
+    const mobileFabBtn = document.getElementById('mobileFabBtn');
+    if (mobileFabBtn) mobileFabBtn.addEventListener('click', () => openSaleModal());
+
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', () => el.openSettingsBtn.click());
 
     // 4 Action Buttons
     el.btnQuickSale.addEventListener('click', () => openSaleModal());

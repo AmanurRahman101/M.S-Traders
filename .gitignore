@@ -1,0 +1,24 @@
+# Dependencies and Build
+node_modules/
+package-lock.json
+
+# Impeccable binary engines and agent harness installs
+.agent/
+.agents/
+.claude/
+.codex/
+.cursor/
+.gemini/
+.grok/
+.hermes/
+.kiro/
+.opencode/
+.pi/
+.qoder/
+.rovodev/
+.vibe/
+*.exe
+
+# OS & Temp Files
+.DS_Store
+Thumbs.db
