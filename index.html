@@ -59,7 +59,13 @@
     <header class="top-nav">
       <div class="nav-left">
         <div class="shop-title-wrap">
-          <h1 class="shop-name">M.S Traders</h1>
+          <div class="shop-title-row">
+            <h1 class="shop-name">M.S Traders</h1>
+            <div id="cloudStatusBadge" class="cloud-badge local" title="ডেটাবেস স্ট্যাটাস">
+              <span class="cloud-dot"></span>
+              <span id="cloudStatusText">লোকাল মেমোরি</span>
+            </div>
+          </div>
           <span class="shop-sub">এম. এস. ট্রেডার্স · সুরিতলা, ঢাকা</span>
         </div>
       </div>
@@ -399,6 +405,25 @@
       </div>
 
       <div class="settings-body">
+        <!-- Permanent Cloud Database Sync (Supabase) -->
+        <div class="set-card cloud-set-card">
+          <h4>☁️ পার্মানেন্ট ক্লাউড ডেটাবেস (Permanent Cloud Sync)</h4>
+          <p>মোবাইল ও কম্পিউটার সব ডিভাইসে লাইভ সিঙ্ক থাকবে এবং ডেটা কখনোই মুছে যাবে না (Supabase ফ্রি ডেটাবেস)।</p>
+          <div class="field-wrap" style="margin-bottom:8px;">
+            <label style="font-size:11px;">Supabase Project URL</label>
+            <input type="text" id="supabaseUrlInput" placeholder="https://xxxxxx.supabase.co" autocomplete="off">
+          </div>
+          <div class="field-wrap" style="margin-bottom:10px;">
+            <label style="font-size:11px;">Supabase Anon Key</label>
+            <input type="password" id="supabaseKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." autocomplete="off">
+          </div>
+          <div class="form-row">
+            <button type="button" id="saveCloudSyncBtn" class="btn-submit flex-1">☁️ ক্লাউডে সিঙ্ক করুন</button>
+            <button type="button" id="disconnectCloudBtn" class="btn-cancel hidden">বিচ্ছিন্ন করুন</button>
+          </div>
+          <div id="cloudSyncFeedback" class="pin-feedback"></div>
+        </div>
+
         <!-- Data Safety & Persistence -->
         <div class="set-card">
           <h4 id="setCard1Title">💾 ডেটা ব্যাকআপ ও সুরক্ষা (Data Backup)</h4>

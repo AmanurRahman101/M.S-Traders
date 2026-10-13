@@ -14,6 +14,8 @@
   const STORAGE_KEY_PIN = 'ms_traders_pin_v1';
   const STORAGE_KEY_THEME = 'ms_traders_theme_v1';
   const STORAGE_KEY_LANG = 'ms_traders_lang_v1';
+  const STORAGE_KEY_SUPABASE_URL = 'ms_supabase_url_v1';
+  const STORAGE_KEY_SUPABASE_KEY = 'ms_supabase_key_v1';
   const SESSION_AUTH_KEY = 'ms_traders_auth_session';
 
   const DEFAULT_PIN = '1234';
@@ -394,6 +396,15 @@
     pinChangeFeedback: document.getElementById('pinChangeFeedback'),
     resetAllDataBtn: document.getElementById('resetAllDataBtn'),
 
+    // Cloud Database Sync
+    cloudStatusBadge: document.getElementById('cloudStatusBadge'),
+    cloudStatusText: document.getElementById('cloudStatusText'),
+    supabaseUrlInput: document.getElementById('supabaseUrlInput'),
+    supabaseKeyInput: document.getElementById('supabaseKeyInput'),
+    saveCloudSyncBtn: document.getElementById('saveCloudSyncBtn'),
+    disconnectCloudBtn: document.getElementById('disconnectCloudBtn'),
+    cloudSyncFeedback: document.getElementById('cloudSyncFeedback'),
+
     // Print Slip
     printableReceipt: document.getElementById('printableReceipt'),
     prCustName: document.getElementById('prCustName'),
@@ -432,7 +443,136 @@
   }
 
   // ===================================================================
-  // DATA PERSISTENCE & AUTO-SAVING
+  // PERMANENT CLOUD DATABASE (SUPABASE REST SYNC)
+  // ===================================================================
+  function getCloudConfig() {
+    return {
+      url: (localStorage.getItem(STORAGE_KEY_SUPABASE_URL) || '').trim().replace(/\/+$/, ''),
+      key: (localStorage.getItem(STORAGE_KEY_SUPABASE_KEY) || '').trim()
+    };
+  }
+
+  function isCloudConfigured() {
+    const cfg = getCloudConfig();
+    return !!(cfg.url && cfg.key);
+  }
+
+  function updateCloudBadge(status) {
+    if (!el.cloudStatusBadge) return;
+    if (status === 'synced') {
+      el.cloudStatusBadge.className = 'cloud-badge cloud-synced';
+      el.cloudStatusText.textContent = state.currentLang === 'bn' ? '☁️ ক্লাউড লাইভ সিঙ্ক' : '☁️ Cloud Synced';
+      el.cloudStatusBadge.title = 'সব ডিভাইসে লাইভ ক্লাউড ডাটাবেস সক্রিয়';
+    } else if (status === 'syncing') {
+      el.cloudStatusBadge.className = 'cloud-badge';
+      el.cloudStatusText.textContent = state.currentLang === 'bn' ? '🔄 সিঙ্ক হচ্ছে...' : '🔄 Syncing...';
+    } else {
+      el.cloudStatusBadge.className = 'cloud-badge local';
+      el.cloudStatusText.textContent = state.currentLang === 'bn' ? 'লোকাল মেমোরি' : 'Local Storage';
+      el.cloudStatusBadge.title = 'ডাটা ব্রাউজারে সংরক্ষিত (সেটিংস থেকে ক্লাউড অন করুন)';
+    }
+  }
+
+  async function syncDownFromCloud() {
+    if (!isCloudConfigured()) {
+      updateCloudBadge('local');
+      return;
+    }
+
+    const { url, key } = getCloudConfig();
+    updateCloudBadge('syncing');
+
+    try {
+      const res = await fetch(`${url}/rest/v1/ms_traders_customers?select=*&order=created.desc`, {
+        method: 'GET',
+        headers: {
+          'apikey': key,
+          'Authorization': `Bearer ${key}`,
+          'Accept': 'application/json'
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error('Cloud fetch failed');
+      }
+
+      const rows = await res.json();
+      if (Array.isArray(rows) && rows.length > 0) {
+        state.customers = rows;
+        localStorage.setItem(STORAGE_KEY_CUSTOMERS, JSON.stringify(state.customers));
+        renderAll();
+      } else if (Array.isArray(rows) && rows.length === 0 && state.customers.length > 0) {
+        // Cloud table is newly created; seed existing local data up to cloud
+        await syncAllUpToCloud();
+      }
+      updateCloudBadge('synced');
+    } catch (err) {
+      console.warn('Cloud sync error (using local storage):', err);
+      updateCloudBadge('local');
+    }
+  }
+
+  async function syncAllUpToCloud() {
+    if (!isCloudConfigured() || !state.customers.length) return;
+    const { url, key } = getCloudConfig();
+
+    try {
+      await fetch(`${url}/rest/v1/ms_traders_customers`, {
+        method: 'POST',
+        headers: {
+          'apikey': key,
+          'Authorization': `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify(state.customers)
+      });
+      updateCloudBadge('synced');
+    } catch (e) {
+      console.warn('Batch upload error:', e);
+    }
+  }
+
+  async function syncCustomerToCloud(customer) {
+    if (!isCloudConfigured()) return;
+    const { url, key } = getCloudConfig();
+
+    try {
+      await fetch(`${url}/rest/v1/ms_traders_customers`, {
+        method: 'POST',
+        headers: {
+          'apikey': key,
+          'Authorization': `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify(customer)
+      });
+      updateCloudBadge('synced');
+    } catch (err) {
+      console.warn('Customer cloud save error:', err);
+    }
+  }
+
+  async function deleteCustomerFromCloud(customerId) {
+    if (!isCloudConfigured()) return;
+    const { url, key } = getCloudConfig();
+
+    try {
+      await fetch(`${url}/rest/v1/ms_traders_customers?id=eq.${encodeURIComponent(customerId)}`, {
+        method: 'DELETE',
+        headers: {
+          'apikey': key,
+          'Authorization': `Bearer ${key}`
+        }
+      });
+    } catch (err) {
+      console.warn('Cloud delete error:', err);
+    }
+  }
+
+  // ===================================================================
+  // DATA PERSISTENCE & AUTO-SAVING (DUAL LAYER: LOCAL + CLOUD)
   // ===================================================================
   function loadData() {
     try {
@@ -440,7 +580,7 @@
       if (raw) {
         state.customers = JSON.parse(raw);
       } else {
-        // Simple initial demonstration parties for Suritola
+        // Initial sample seed for M.S Traders
         state.customers = [
           {
             id: 'c-1',
@@ -497,11 +637,28 @@
       console.error('Data error:', e);
       state.customers = [];
     }
+
+    // Attempt cloud sync in the background
+    if (isCloudConfigured()) {
+      syncDownFromCloud();
+    } else {
+      updateCloudBadge('local');
+    }
   }
 
-  function saveData() {
+  function saveData(modifiedCustomer = null) {
     try {
+      // 1. Instant local persistence
       localStorage.setItem(STORAGE_KEY_CUSTOMERS, JSON.stringify(state.customers));
+
+      // 2. Background permanent cloud persistence
+      if (isCloudConfigured()) {
+        if (modifiedCustomer) {
+          syncCustomerToCloud(modifiedCustomer);
+        } else {
+          syncAllUpToCloud();
+        }
+      }
     } catch (e) {
       alert('সতর্কতা: স্টোরেজ সীমা অতিক্রম করেছে।');
     }
@@ -937,8 +1094,10 @@
     if (!party) return;
 
     if (confirm(`আপনি কি নিশ্চিত যে "${party.name}" এর পুরো খাতা মুছে ফেলতে চান?`)) {
-      state.customers = state.customers.filter(c => c.id !== party.id);
+      const removedId = party.id;
+      state.customers = state.customers.filter(c => c.id !== removedId);
       saveData();
+      deleteCustomerFromCloud(removedId);
       el.statementModal.classList.add('hidden');
       renderAll();
     }
@@ -1186,6 +1345,62 @@
     el.pinChangeFeedback.style.color = 'var(--paid-green)';
   }
 
+  // Cloud Connect Handlers
+  async function handleConnectCloud() {
+    const url = (el.supabaseUrlInput.value || '').trim().replace(/\/+$/, '');
+    const key = (el.supabaseKeyInput.value || '').trim();
+
+    if (!url || !key) {
+      el.cloudSyncFeedback.textContent = '❌ Supabase URL এবং Anon Key দিন!';
+      el.cloudSyncFeedback.style.color = 'var(--due-red)';
+      return;
+    }
+
+    el.cloudSyncFeedback.textContent = '🔄 সংযোগ পরীক্ষা করা হচ্ছে...';
+    el.cloudSyncFeedback.style.color = 'var(--text-muted)';
+
+    try {
+      const res = await fetch(`${url}/rest/v1/ms_traders_customers?limit=1`, {
+        method: 'GET',
+        headers: {
+          'apikey': key,
+          'Authorization': `Bearer ${key}`
+        }
+      });
+
+      if (!res.ok) {
+        throw new Error('Supabase table error');
+      }
+
+      localStorage.setItem(STORAGE_KEY_SUPABASE_URL, url);
+      localStorage.setItem(STORAGE_KEY_SUPABASE_KEY, key);
+
+      el.cloudSyncFeedback.textContent = '✅ ক্লাউড ডাটাবেস সফলভাবে সংযুক্ত হয়েছে!';
+      el.cloudSyncFeedback.style.color = 'var(--paid-green)';
+      el.disconnectCloudBtn.classList.remove('hidden');
+
+      // Sync data immediately
+      await syncDownFromCloud();
+      await syncAllUpToCloud();
+    } catch (err) {
+      el.cloudSyncFeedback.textContent = '❌ সংযোগ ব্যর্থ! URL/Key ঠিক আছে কি না এবং supabase_setup.sql রান করেছেন কি না যাচাই করুন।';
+      el.cloudSyncFeedback.style.color = 'var(--due-red)';
+    }
+  }
+
+  function handleDisconnectCloud() {
+    if (confirm('ক্লাউড সংযোগ বিচ্ছিন্ন করে লোকাল মেমোরিতে ফিরে যাবেন?')) {
+      localStorage.removeItem(STORAGE_KEY_SUPABASE_URL);
+      localStorage.removeItem(STORAGE_KEY_SUPABASE_KEY);
+      el.supabaseUrlInput.value = '';
+      el.supabaseKeyInput.value = '';
+      el.disconnectCloudBtn.classList.add('hidden');
+      el.cloudSyncFeedback.textContent = 'লোকাল মোডে পরিবর্তিত হয়েছে।';
+      el.cloudSyncFeedback.style.color = 'var(--text-muted)';
+      updateCloudBadge('local');
+    }
+  }
+
   // ===================================================================
   // EVENT BINDINGS
   // ===================================================================
@@ -1209,8 +1424,19 @@
     // Top Controls
     el.langToggleBtn.addEventListener('click', () => setLanguage(state.currentLang === 'bn' ? 'en' : 'bn'));
     el.themeToggleBtn.addEventListener('click', () => setTheme(state.currentTheme === 'dark' ? 'light' : 'dark'));
-    el.openSettingsBtn.addEventListener('click', () => el.settingsModal.classList.remove('hidden'));
+    el.openSettingsBtn.addEventListener('click', () => {
+      const cfg = getCloudConfig();
+      el.supabaseUrlInput.value = cfg.url;
+      el.supabaseKeyInput.value = cfg.key;
+      el.disconnectCloudBtn.classList.toggle('hidden', !isCloudConfigured());
+      el.cloudSyncFeedback.textContent = '';
+      el.settingsModal.classList.remove('hidden');
+    });
     el.lockAppBtn.addEventListener('click', lockApp);
+
+    // Cloud settings buttons
+    el.saveCloudSyncBtn.addEventListener('click', handleConnectCloud);
+    el.disconnectCloudBtn.addEventListener('click', handleDisconnectCloud);
 
     // Hero buttons
     el.btnQuickSale.addEventListener('click', () => openSaleModal());

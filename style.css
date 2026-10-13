@@ -243,6 +243,43 @@ body {
   flex-direction: column;
 }
 
+.shop-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cloud-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--bg-subtle);
+  color: var(--text-muted);
+}
+
+.cloud-badge.cloud-synced {
+  background: var(--paid-green-bg);
+  border-color: var(--paid-green-border);
+  color: var(--paid-green);
+}
+
+.cloud-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f59f00; /* local/amber */
+}
+
+.cloud-badge.cloud-synced .cloud-dot {
+  background: var(--paid-green);
+  box-shadow: 0 0 5px rgba(43, 138, 62, 0.4);
+}
+
 .shop-name {
   font-size: 22px;
   font-weight: 700;
