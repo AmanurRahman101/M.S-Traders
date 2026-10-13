@@ -24,11 +24,11 @@
 
   // ===================================================================
   // BILINGUAL TRANSLATION DICTIONARY
-  // Authentic Old Dhaka Commercial Language & Crisp English
+  // Clean, Simple, Non-Redundant Commercial Vocabulary
   // ===================================================================
   const i18n = {
     bn: {
-      doc_title: 'M.S Traders | দেনা-পাওনা ও ডিজিটাল খাতা',
+      doc_title: 'M.S Traders | দেনা-পাওনা ও ক্যাশ খাতা',
       shop_sub: 'এম. এস. ট্রেডার্স · সুরিতলা, ঢাকা',
       pin_label: 'পিন কোড দিন (PIN: 1234)',
       pin_error: 'ভুল পিন! সঠিক পিন দিন।',
@@ -37,60 +37,69 @@
       pin_hint: 'ডিফল্ট পিন: <strong>1234</strong>',
 
       // 3 Pillars
-      lbl_pawna_title: 'মোট পাওনা (PAWNA / Dues)',
-      tag_pawna: 'আদায় বাকি',
-      note_pawna: 'কাস্টমারদের কাছে আমাদের বাকি পাওনা',
+      lbl_pawna_title: 'কাস্টমার পাওনা',
+      tag_pawna: 'বাকি',
+      note_pawna: 'কাস্টমারদের কাছে মোট পাওনা',
 
-      lbl_dena_title: 'মোট দেনা (DENA / Liabilities)',
-      tag_dena: 'পরিশোধ বাকি',
-      note_dena: 'মহাজন ও সাপ্লায়ারদের কাছে আমাদের দেনা',
+      lbl_dena_title: 'মহাজন দেনা',
+      tag_dena: 'দেনা',
+      note_dena: 'মহাজন ও মিলে মোট দেনা',
 
-      lbl_cash_title: 'আজকের হাতে ক্যাশ (Net Cash)',
-      tag_cash: 'আজকের ক্যাশ',
-      note_cash: 'আজকের নগদ আদায় − পরিশোধ ও খরচ',
+      lbl_cash_title: 'আজকের ক্যাশ',
+      tag_cash: 'নগদ',
+      note_cash: 'আজকের নগদ জমা − খরচ ও পরিশোধ',
 
       // 4 Action Tiles
-      btn_sale_text: 'নতুন মাল বিক্রি',
-      btn_sale_sub: 'গজ ও গিরা মাপে বাকি বা ক্যাশ',
-      btn_pay_text: 'কাস্টমার জমা গ্রহণ',
-      btn_pay_sub: 'পাওনা টাকা আদায় এন্ট্রি',
-      btn_dena_text: 'মহাজন দেনা এন্ট্রি',
-      btn_dena_sub: 'সাপ্লায়ার বা মিল থেকে মাল ক্রয়',
-      btn_expense_text: 'দোকান খরচ লিখুন',
-      btn_expense_sub: 'চা, লেবার, গাড়ি ভাড়া ইত্যাদি',
+      btn_sale_text: 'নতুন বিক্রি',
+      btn_sale_sub: 'গজ-গিরা মাপে বিক্রি',
+      btn_pay_text: 'কাস্টমার জমা',
+      btn_pay_sub: 'বাকি টাকা গ্রহণ',
+      btn_dena_text: 'মহাজন বিল',
+      btn_dena_sub: 'মাল ক্রয় দেনা',
+      btn_expense_text: 'দোকান খরচ',
+      btn_expense_sub: 'চা, লেবার ও খরচ',
 
-      // Tabs
-      tab_pawna: '👥 কাস্টমার পাওনা (PAWNA)',
-      tab_dena: '🏭 মহাজন দেনা (DENA)',
-      tab_expense: '💸 দোকান খরচ (EXPENSES)',
+      // Tabs & Headings
+      tab_pawna: '👥 কাস্টমার পাওনা',
+      tab_dena: '🏭 মহাজন দেনা',
+      tab_expense: '💸 দোকান খরচ',
+      sec_pawna: 'কাস্টমার পাওনা',
+      sec_dena: 'মহাজন দেনা',
+      sec_expense: 'দোকান খরচ',
+
+      // Mobile Bottom Nav
+      nav_pawna: 'পাওনা',
+      nav_dena: 'দেনা',
+      nav_expense: 'খরচ',
+      nav_settings: 'সেটিংস',
 
       // Search & Filters
-      search_pawna_ph: 'কাস্টমারের নাম বা ফোন লিখুন...',
-      search_dena_ph: 'মহাজন বা সাপ্লায়ারের নাম দিয়ে খুঁজুন...',
+      search_pawna_ph: 'কাস্টমারের নাম বা ফোন...',
+      search_dena_ph: 'মহাজনের নাম বা ফোন...',
       pill_all: 'সবাই',
       pill_due: 'বাকি আছে',
       pill_paid: 'পরিশোধিত',
 
       // Empty states
       empty_pawna_title: 'কোনো কাস্টমার পাওনা নেই',
-      empty_pawna_sub: 'উপরে "নতুন মাল বিক্রি" বাটনে চাপ দিয়ে প্রথম হিসাব শুরু করুন।',
-      empty_dena_title: 'কোনো মহাজন বা সাপ্লায়ার দেনা নেই',
-      empty_dena_sub: 'উপরে "মহাজন দেনা এন্ট্রি" বাটনে চাপ দিয়ে নতুন দেনা হিসাব যোগ করুন।',
+      empty_pawna_sub: 'উপরে "নতুন বিক্রি" বাটনে চাপ দিয়ে প্রথম হিসাব শুরু করুন।',
+      empty_dena_title: 'কোনো মহাজন দেনা নেই',
+      empty_dena_sub: 'উপরে "মহাজন বিল" বাটনে চাপ দিয়ে নতুন দেনা হিসাব যোগ করুন।',
       empty_exp_title: 'আজকে কোনো দোকান খরচ লেখা হয়নি',
-      empty_exp_sub: 'চা-নাস্তা, পরিবহন বা অন্যান্য খরচ যোগ করতে বাটনে চাপ দিন।',
+      empty_exp_sub: 'চা-নাস্তা বা অন্যান্য খরচ যোগ করতে বাটনে চাপ দিন।',
 
       // Card Action Buttons
       btn_card_sale: '＋বিক্রি',
       btn_card_pay: '৳জমা',
       btn_card_wa: '💬তাগাদা',
-      btn_card_dena_bill: '＋বিল যোগ',
+      btn_card_dena_bill: '＋বিল',
       btn_card_dena_pay: '৳পরিশোধ',
       status_paid: 'পরিশোধিত',
       status_due: 'বাকি',
       status_dena_due: 'দেনা',
 
       // Expense Strip
-      lbl_today_exp: 'আজকের মোট দোকান খরচ',
+      lbl_today_exp: 'আজকের মোট খরচ',
       btn_add_exp: '＋ খরচ যোগ করুন',
 
       // Gauze & Ghira Measurement
@@ -122,52 +131,61 @@
     en: {
       doc_title: 'M.S Traders | Receivables & Payables Ledger',
       shop_sub: 'M.S Traders · Suritola, Dhaka',
-      pin_label: 'Enter Security PIN (PIN: 1234)',
+      pin_label: 'Enter Security PIN (1234)',
       pin_error: 'Invalid PIN! Please enter the correct PIN.',
       num_clear: 'Clear',
       num_enter: 'Enter',
       pin_hint: 'Default PIN: <strong>1234</strong>',
 
       // 3 Pillars
-      lbl_pawna_title: 'Total Receivables (PAWNA / Dues)',
+      lbl_pawna_title: 'Customer Dues',
       tag_pawna: 'To Collect',
-      note_pawna: 'Outstanding money owed to us by customers',
+      note_pawna: 'Total money owed by customers',
 
-      lbl_dena_title: 'Total Liabilities (DENA / Payables)',
+      lbl_dena_title: 'Supplier Dena',
       tag_dena: 'To Pay',
-      note_dena: 'Money we owe to suppliers & mills',
+      note_dena: 'Total money owed to suppliers',
 
-      lbl_cash_title: 'Today\'s Net Cash (In Hand)',
-      tag_cash: 'Cash Flow',
-      note_cash: 'Today\'s cash collections minus payments & expenses',
+      lbl_cash_title: "Today's Cash",
+      tag_cash: 'In Hand',
+      note_cash: "Today's net cash in hand",
 
       // 4 Action Tiles
-      btn_sale_text: 'New Customer Sale',
-      btn_sale_sub: 'Gauze & Ghira credit or cash sale',
-      btn_pay_text: 'Customer Cash In',
-      btn_pay_sub: 'Collect customer due settlement',
-      btn_dena_text: 'Supplier Liability',
-      btn_dena_sub: 'Purchase goods from mill/supplier',
+      btn_sale_text: 'New Sale',
+      btn_sale_sub: 'Gauze & Ghira sale',
+      btn_pay_text: 'Cash In',
+      btn_pay_sub: 'Collect payment',
+      btn_dena_text: 'Supplier Bill',
+      btn_dena_sub: 'Purchase on credit',
       btn_expense_text: 'Shop Expense',
-      btn_expense_sub: 'Tea, labor, transport, rent, bills',
+      btn_expense_sub: 'Tea, bills, labor',
 
-      // Tabs
-      tab_pawna: '👥 Receivables (PAWNA)',
-      tab_dena: '🏭 Payables (DENA)',
-      tab_expense: '💸 Daily Expenses',
+      // Tabs & Headings
+      tab_pawna: '👥 Customer Dues',
+      tab_dena: '🏭 Supplier Dena',
+      tab_expense: '💸 Shop Expenses',
+      sec_pawna: 'Customer Dues',
+      sec_dena: 'Supplier Dena',
+      sec_expense: 'Shop Expenses',
+
+      // Mobile Bottom Nav
+      nav_pawna: 'Dues',
+      nav_dena: 'Dena',
+      nav_expense: 'Expense',
+      nav_settings: 'Settings',
 
       // Search & Filters
       search_pawna_ph: 'Search customer name or phone...',
-      search_dena_ph: 'Search supplier or mill name...',
+      search_dena_ph: 'Search supplier name...',
       pill_all: 'All',
       pill_due: 'Due Only',
       pill_paid: 'Settled',
 
       // Empty states
       empty_pawna_title: 'No Customer Dues',
-      empty_pawna_sub: 'Click "New Customer Sale" above to record a transaction.',
+      empty_pawna_sub: 'Click "New Sale" above to record a transaction.',
       empty_dena_title: 'No Supplier Liabilities',
-      empty_dena_sub: 'Click "Supplier Liability" above to record a purchase.',
+      empty_dena_sub: 'Click "Supplier Bill" above to record a purchase.',
       empty_exp_title: 'No Expenses Recorded Today',
       empty_exp_sub: 'Record tea, labor, or transport expenses anytime.',
 
@@ -182,7 +200,7 @@
       status_dena_due: 'Owed',
 
       // Expense Strip
-      lbl_today_exp: 'Today\'s Total Expenses',
+      lbl_today_exp: "Today's Expenses",
       btn_add_exp: '＋ Add Expense',
 
       // Gauze & Ghira Measurement
@@ -1487,6 +1505,22 @@
     el.tabPawnaBtn.querySelector('span:first-child').textContent = L.tab_pawna;
     el.tabDenaBtn.querySelector('span:first-child').textContent = L.tab_dena;
     el.tabExpenseBtn.querySelector('span:first-child').textContent = L.tab_expense;
+
+    const secPawna = document.getElementById('secPawnaTitle');
+    if (secPawna) secPawna.textContent = L.sec_pawna;
+    const secDena = document.getElementById('secDenaTitle');
+    if (secDena) secDena.textContent = L.sec_dena;
+    const secExp = document.getElementById('secExpenseTitle');
+    if (secExp) secExp.textContent = L.sec_expense;
+
+    const mPawna = document.getElementById('mNavPawna');
+    if (mPawna) mPawna.textContent = L.nav_pawna;
+    const mDena = document.getElementById('mNavDena');
+    if (mDena) mDena.textContent = L.nav_dena;
+    const mExp = document.getElementById('mNavExpense');
+    if (mExp) mExp.textContent = L.nav_expense;
+    const mSet = document.getElementById('mNavSettings');
+    if (mSet) mSet.textContent = L.nav_settings;
 
     el.pawnaSearchInput.placeholder = L.search_pawna_ph;
     el.denaSearchInput.placeholder = L.search_dena_ph;
